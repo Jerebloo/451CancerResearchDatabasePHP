@@ -1,32 +1,4 @@
-﻿<?PHP
-
-require_once("dBaseAccess.php");
-
-$query = 
-"select distinct 
-    mirna_name AS source, 
-    dis_name AS target, 
-    dis_reguln AS type
-from main_v2 , disease 
-where mirna_name = 'hsa-mir-21' 
-limit 30";
-
-$result = mysqli_query($mirnabDb,$query);
-
- if ( ! $result ) {
-        echo mysql_error();
-        die;
-    }
-
-//$data = array();
-
-  for ($x = 0; $x < mysqli_num_rows($result); $x++) {
-        $data[] = mysqli_fetch_assoc($result);
-    }
-$jsonForm = json_encode($data);
-
-
-?>
+﻿
 
 <html lang="en">
 <head>
@@ -44,6 +16,8 @@ $jsonForm = json_encode($data);
    <link rel="stylesheet" href="newG.css">
      <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
     <script src="tabScript.js"></script>
+    <script src="table.js"></script>
+    <link rel="stylesheet" href="table.css">
 </head>
 <body onload="init()">
     <div class="container">
@@ -87,46 +61,74 @@ $jsonForm = json_encode($data);
     
         <ul id="tabs">
             <li><a href="#about">SearchBox</a></li>
-            <li><a href="#advantages">Advantages of tabs</a></li>
-            <li><a href="#usage">Using tabs</a></li>
         </ul>
 
         <div class="tabContent" id="about">
-            <h2>About JavaScript tabs</h2>
+            <h2>Please enter a query</h2>
             <div>
-                <form =""><textarea cols="30" rows="6"></textarea>
-                <br><br>
-                <input type="submit" value="Submit"></form>
+                <form ="" method='post'>
+                
+                <input type = "text" name="user" value ="">
+                
+                
+                <input type="submit" name="submit" value="Submit"></form>
+                              
+                
             </div>
-            <div id="graph2">
- <script src="newGraph.js"></script>
+
+            <div class="row">
+                        <div class="col-lg-4 col-md-6 col-sm-6" id="table"> 
+                        </div>
+                        <div class="col-lg-8 col-md-6 col-sm-6" id="graph">
+                        </div>
+                    </div>
+
+
+<?php
+if ( ! empty($_POST['user'])){
+    $name = $_POST['user'];
+
+require_once("dBaseAccess.php");
+
+
+
+$result = mysqli_query($mirnabDb,$_POST['user']);
+
+//echo $result;
+
+ if ( ! $result ) {
+        echo mysql_error();
+        die;
+    }
+
+//$data = array();
+
+  for ($x = 0; $x < mysqli_num_rows($result); $x++) {
+        $data[] = mysqli_fetch_assoc($result);
+    }
+$jsonForm = json_encode($data);
+
+}
+
+?>
+
+         
+ 
+        </div>
+    </div><!--/.container-fluid -->
+     
+
+                    <script src="newGraph.js"></script>
 <script>
 var jsonForm = <?php echo $jsonForm; ?>;
 
-createGraph(jsonForm,"#graph2");
+
+createTable(jsonForm,"#table"); 
+createGraph(jsonForm,"#graph");
+
 
 </script>
-             </div>
-        </div>
-
-        <div class="tabContent" id="advantages">
-            <h2>Advantages of tabs</h2>
-            <div>
-                <textarea cols="30" rows="6"></textarea>
-                <br><br>
-                <input type="submit" value="Submit">
-            </div>
-        </div>
-
-        <div class="tabContent" id="usage">
-            <h2>Using tabs</h2>
-            <div>
-                <textarea cols="30" rows="6"></textarea>
-                <br><br>
-                <input type="submit" value="Submit">
-            </div>
-        </div>
-    </div><!--/.container-fluid -->
+            
      <!-- /container -->
     <!-- Bootstrap core JavaScript
     ================================================== -->

@@ -86,7 +86,7 @@ $jsonForm = json_encode($data);
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="#">Project name</a>
+                    <a class="navbar-brand" href="#">Cancer Research Database</a>
                 </div>
                 <div id="navbar" class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
@@ -110,24 +110,17 @@ $jsonForm = json_encode($data);
             
         </nav>
         <!-- Main component for a primary marketing message or call to action -->
-                <div class="home">
+                <div class="container">
                     <p>This page will allow you to search the database.</p>
                     <select id="selector"> </select>
 
-                    <div id="graph">
+                    <div class="row">
+                        <div class="col-lg-4 col-md-6 col-sm-6" id="table"> 
+                        </div>
+                        <div class="col-lg-8 col-md-6 col-sm-6" id="graph">
+                        </div>
+                    </div>
 
-                    <script src="newGraph.js"></script>
-<script>
-
-var jsonForm = <?php 
-
-echo $jsonForm; 
-
-?>; 
-createGraph(jsonForm,"#graph");
-
-</script>
-</div>
                 </div>
 
     </div><!--/.container-fluid -->
@@ -136,74 +129,68 @@ createGraph(jsonForm,"#graph");
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
 
-                        <script>
-                    window.onload = function () 
-                    {
-                        var JSON = pech
-                        , 
-                    select = document.getElementById("selector");
+    <script>
+        window.onload = function () 
+        {
+            var JSON = pech, 
+            select = document.getElementById("selector");
+            var option = document.createElement("option");
+            option.value = "Select miRNA";
+            option.textContent = "Select miRNA";
+            select.appendChild(option);
 
-    for (var i = 0 ;  i < JSON.length; i++) 
 
-    {   at = JSON[i];
-        name = at.mirna_name;
-        var option = document.createElement("option");
-        option.value = name;
-        option.textContent = name;
-
-        select.appendChild(option);
-    };
-};
-                    </script>
+            for (var i = 0 ;  i < JSON.length; i++)
+            {   at = JSON[i];
+                name = at.mirna_name;
+                var option = document.createElement("option");
+                option.value = name;
+                option.textContent = name;
+                select.appendChild(option);
+            };
+        };
+    </script>
 
  <script src="http://code.jquery.com/jquery-1.11.3.js"></script>
  <script src="https://rawgit.com/gka/d3-jetpack/master/d3-jetpack.js"></script>
 
 
- <div id="table">
+ 
  <script src="table.js"></script>
+ <script src="newGraph.js"></script>
 <script>
-
-var phpJson = [];
-
-    function drawData(data) {
-        for (var i = data.length - 1; i >= 0; i--) {
-            phpJson[i] = data[i];
-            //console.log(phpJson[i]);
-        };
-    }
     $("#selector").change(function() {
         // gets the miRNA selected using dropdown
         var mirnaSelected = $(this).val();
-        console.log(mirnaSelected);
-
+        var phpJson = [];
+      
         $.ajax({
             url: 'queries.php',
             type: 'POST',
             data: {'mirna': mirnaSelected, 'flag': 100},
             dataType: "json",
             success: function(data) {
-                alert("worked");
-                drawData(data);
-                console.log(phpJson[1]);
-                createTable(phpJson,"#table"); 
+               // if data is not empty
+               if(data){
+                    $("#table").empty();
+                    $("#graph svg").remove();
+                    createTable(data,"#table");
+                    createGraph(data,"#graph");
+                }
+                else {
+                    alert("No results for the selected miRNA. Select a different miRNA.");
+                }
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 console.log(jqXHR.responseText);
                 console.log(errorThrown);
             }
-        });
-
-
-
-    });
-
-  console.log(phpJson[1]);
-   
-
-
+        }); // end of ajax request
+    }); // end of select change
 </script>
-</div>
+
+
+
     
     <script src="bootstrap-3.3.5-dist/js/bootstrap.min.js"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->

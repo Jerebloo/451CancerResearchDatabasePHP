@@ -1,14 +1,22 @@
 
 
 function createGraph(jsonData,tabDiv)
-{jsonData.sort(function(a,b){if(a.source>b.source){return 1;}
-else if(a.source<b.source){return-1;}
-else{if(a.target>b.target){return 1;}
+{
 
-if(a.target<b.target){return-1;}
+  jsonData.sort(function(a,b){if(a.source>b.source){return 1;}
+  else if(a.source<b.source){return-1;}
+  else{
+    if(a.target>b.target){return 1;}
 
-else{
-  return 0;}}});for(var i=0;i<jsonData.length;i++)
+    if(a.target<b.target) {
+      return-1;
+    }
+
+    else{
+      return 0;
+    }
+  }
+});for(var i=0;i<jsonData.length;i++)
 
 {
   if(i!=0&&jsonData[i].source==jsonData[i-1].source&&jsonData[i].target==jsonData[i-1].target)
@@ -24,7 +32,10 @@ else
 
     for(var i=0;i<jsonData.length;i++){arrows[i]=jsonData[i].type;};
 
-      var w=1000,h=700;
+      //var w=1000,h=800;
+      var w=500,h=800;
+      console.log(tabDiv);
+      var w = document.getElementById("graph").offsetWidth;
 
       var force=d3.layout.force()
       .nodes(d3.values(nodes))
@@ -77,12 +88,16 @@ else
     .attr("x",8).attr("y",".31em")
     .text(function(d){return d.name;});
 
-    function tick()
-    {path.attr("d",function(d)
-      {var dx=d.target.x-d.source.x,dy=d.target.y-d.source.y,
-        dr=1000/d.linknum;
-        return"M"+d.source.x+","+d.source.y+"A"+dr+","+dr+" 0 0,1 "+d.target.x+","+d.target.y;});
+    function tick() {
+        path.attr("d",function(d)
+        {
+          var dx=d.target.x-d.source.x,dy=d.target.y-d.source.y,
+          dr=1000/d.linknum;
+          return"M"+d.source.x+","+d.source.y+"A"+dr+","+dr+" 0 0,1 "+d.target.x+","+d.target.y;
+        });
 
-    circle.attr("transform",function(d){return"translate("+d.x+","+d.y+")";});
+      circle.attr("transform",function(d){return"translate("+d.x+","+d.y+")";});
 
-    text.attr("transform",function(d){return"translate("+d.x+","+d.y+")";});}}
+      text.attr("transform",function(d){return"translate("+d.x+","+d.y+")";});
+    }
+  }

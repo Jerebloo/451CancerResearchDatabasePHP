@@ -11,11 +11,9 @@
 			    mirna_name AS source, 
 			    dis_name AS target, 
 			    dis_reguln AS type
-			FROM main_v2 , disease 
-			WHERE mirna_name = '".$mirna."' 
-			LIMIT 30";
+			FROM main_v2, disease 
+			WHERE main_v2.link_id = disease.link_id AND mirna_name = '".$mirna."' LIMIT 30";
 
-		#echo $query;
 		$result = mysqli_query($mirnabDb, $query);
 
 		for ($x = 0; $x < mysqli_num_rows($result); $x++) {

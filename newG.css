@@ -17,7 +17,7 @@ marker#up-regulated ,marker#Up-regulated, marker#upregulated, marker#Upregulated
 
 path.link.down-regulated , path.link.Down-regulated, path.link.downregulated, path.link.Downregulated {
  
-  stroke: rgb(250,130,120);
+  stroke: rgb(220,70,80);
 }
 
 path.link.up-regulated , path.link.Up-regulated, path.link.upregulated, path.link.Upregulated{
@@ -32,7 +32,7 @@ path.link.normal
 }
 
 circle {
-  fill: rgb(180,42,42);
+  fill: rgb(180,62,42);
   stroke: rgb(255,235,200);
   stroke-width: 2px;
 }
@@ -40,7 +40,7 @@ circle {
 text {
   font: 13px helvetica;
   pointer-events: none;
-  stroke:rgb(110,60,60);
+  stroke:rgb(120,60,90);
 }
 
 text.shadow {

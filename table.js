@@ -12,12 +12,10 @@
 // Get the data
 
 // The table generation function
-function tabulate(passChoice, columns) {
-
-console.log(passChoice[1]);
-
+function tabulate(passChoice, columns) {    
     var table = d3.select(divChoice).append("table")
-        .attr("style", "margin-left: 250px"),
+        //.attr("style", "margin-left: 250px")
+        .style("border", "3px rgb(160,200,200) solid"), 
         thead = table.append("thead"),
         tbody = table.append("tbody");
 
@@ -44,15 +42,13 @@ console.log(passChoice[1]);
         })
         .enter()
         .append("td")
-        .attr("style", "font-family: Courier") // sets the font style
+        .attr("style", "font-family: Helvetica") // sets the font style
             .html(function(d) { return d.value; });
     
     return table;
 }
 
-// render the table
-  tabulate(passChoice, ["source", "target","type"]);
-
-
+    // render the table
+    tabulate(passChoice, ["source", "target", "type"]);
 
 }
