@@ -1,0 +1,50 @@
+path.link {
+  fill: none;
+  stroke: rgb(175,175,175);;
+  stroke-width: 3px;
+}
+
+marker#down-regulated ,marker#Down-regulated, marker#downregulated, marker#Downregulated
+{
+
+  fill: rgb(230,100,140);
+}
+
+marker#up-regulated ,marker#Up-regulated, marker#upregulated, marker#Upregulated
+{
+   fill: rgb(70,200,170);
+}
+
+path.link.down-regulated , path.link.Down-regulated, path.link.downregulated, path.link.Downregulated {
+ 
+  stroke: rgb(250,130,120);
+}
+
+path.link.up-regulated , path.link.Up-regulated, path.link.upregulated, path.link.Upregulated{
+ 
+  stroke: rgb(100,240,200);
+
+}
+
+path.link.normal
+{
+  stroke: rgb(90,50,70);
+}
+
+circle {
+  fill: rgb(180,42,42);
+  stroke: rgb(255,235,200);
+  stroke-width: 2px;
+}
+
+text {
+  font: 13px helvetica;
+  pointer-events: none;
+  stroke:rgb(110,60,60);
+}
+
+text.shadow {
+  stroke: rgb(255,255,255);
+  stroke-width: 5px;
+  stroke-opacity: 1;
+}
