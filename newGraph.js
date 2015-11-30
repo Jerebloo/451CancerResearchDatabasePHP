@@ -34,7 +34,6 @@ else
 
       //var w=1000,h=800;
       var w=500,h=800;
-      console.log(tabDiv);
       var w = document.getElementById("graph").offsetWidth;
 
       var force=d3.layout.force()

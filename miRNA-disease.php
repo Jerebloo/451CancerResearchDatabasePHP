@@ -1,4 +1,4 @@
-﻿
+
 
 <html lang="en">
 <head>
@@ -37,8 +37,8 @@
                     <ul class="nav navbar-nav">
                         <li><a href="Home.html">Home</a></li>
                         <li><a href="Search.php">Search</a></li>
-                        <li class="active"><a href="Analysis.php">Analysis</a></li>
-                         <li><a href="miRNA-disease.php">miRNA-disease</a></li>
+                        <li><a href="Analysis.php">Analysis</a></li>
+                         <li class="active"><a href="miRNA-disease.php">miRNA-disease</a></li>
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
                             <ul class="dropdown-menu">
@@ -61,7 +61,8 @@
         </div>
     
         <ul id="tabs">
-            <li><a href="#about">SearchBox</a></li>
+            <li><a href="#about">Tab1</a></li>
+            <li><a href="#tab2">Tab2</a></li>
         </ul>
 
         <div class="tabContent" id="about">
@@ -91,9 +92,31 @@ if ( ! empty($_POST['user'])){
 
 require_once("dBaseAccess.php");
 
-echo $name;
+$mirna = mysqli_real_escape_string($mirnabDb, $_POST['user']);
+        
+       $trimmed = array();
+            $str = preg_split('/,/', $mirna);
+        //echo json_encode($str);
+            for ($i=0;$i<count($str);$i++) {
+                    $trimmed[$i] = trim($str[$i]);
+            }
 
-$result = mysqli_query($mirnabDb,$_POST['user']);
+        $strNew = implode("','", $trimmed);
+
+        echo $strNew;
+        
+        $query = 
+           "SELECT mirna_name AS source
+           , dis_name AS target
+           , dis_reguln AS type
+           , dis_pubId 
+                from main_v2, disease 
+                where main_v2.link_id = disease.link_id
+                AND mirna_name in ('hsa-mir-127')
+                LIMIT 30
+                ";
+
+$result = mysqli_query($mirnabDb,$query);
 
 //echo $result;
 
@@ -115,13 +138,8 @@ $jsonForm = json_encode($data);
 
 ?>
 
-         
- 
-        </div>
-    </div><!--/.container-fluid -->
-     
 
-                    <script src="newGraph.js"></script>
+                  <script src="newGraph.js"></script>
 <script>
 var jsonForm = <?php echo $jsonForm; ?>;
 
@@ -130,7 +148,97 @@ createTable(jsonForm,"#table");
 createGraph(jsonForm,"#graph");
 
 
+</script>  
+
+         
+ 
+        </div>
+
+<div class="tabContent" id="tab2">
+            <h2>Please enter a query</h2>
+            <div>
+                <form ="" method='post'>
+                
+                <input type = "text" name="user2" value ="">
+                
+                
+                <input type="submit" name="submit" value="Submit"></form>
+                              
+                
+            </div>
+
+            <div class="row">
+                        <div class="col-lg-4 col-md-6 col-sm-6" id="table"> 
+                        </div>
+                        <div class="col-lg-8 col-md-6 col-sm-6" id="graph">
+                        </div>
+                    </div>
+
+
+<?php
+if ( ! empty($_POST['user2'])){
+    $name = $_POST['user2'];
+
+require_once("dBaseAccess.php");
+
+$mirna = mysqli_real_escape_string($mirnabDb, $_POST['user2']);
+
+$trimmed = array();
+            $str = preg_split('/,/', $mirna);
+        //echo json_encode($str);
+            for ($i=0;$i<count($str);$i++) {
+                    $trimmed[$i] = trim($str[$i]);
+            }
+
+        $strNew = implode("','", $trimmed);
+
+        //echo $strNew;
+        
+        $query = 
+           "SELECT mirna_name AS source
+           , dis_name AS target
+           , dis_reguln AS type
+           , dis_pubId 
+                from main_v2, disease 
+                where main_v2.link_id = disease.link_id
+                AND dis_name in ('".$strNew."')
+                LIMIT 30
+                ";
+
+$result = mysqli_query($mirnabDb,$query);
+
+//echo $result;
+
+ if ( ! $result ) {
+        echo mysql_error();
+        die;
+    }
+
+$data = array();
+
+  for ($x = 0; $x < mysqli_num_rows($result); $x++) {
+        $data[] = mysqli_fetch_assoc($result);
+    }
+$jsonForm2 = json_encode($data);
+
+}
+
+?>
+<script>
+var jsonForm2 = <?php echo $jsonForm2; ?>;
+
+
+createTable(jsonForm2,"#table"); 
+createGraph(jsonForm2,"#graph");
+
+
 </script>
+ 
+        </div>
+
+
+    </div><!--/.container-fluid -->
+     
             
      <!-- /container -->
     <!-- Bootstrap core JavaScript
