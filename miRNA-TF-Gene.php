@@ -38,8 +38,8 @@
                         <li><a href="Home.html">Home</a></li>
                         <li><a href="Search.php">Search</a></li>
                         <li><a href="Analysis.php">Analysis</a></li>
-                         <li class="active"><a href="miRNA-disease.php">miRNA-disease</a></li>
-                         <li><a href="miRNA-TF-Gene.php">miRNA-TF-Gene</a></li>
+                         <li><a href="miRNA-disease.php">miRNA-disease</a></li>
+                         <li class="active"><a href="miRNA-TF-Gene.php">miRNA-TF-Gene</a></li>
                         <li><a>miRNA-Drug</a></li>
                         <li><a>miRNA methylation</a></li>
                     </ul>
@@ -52,8 +52,8 @@
         </div>
     
         <ul id="tabs">
-            <li><a href="#about">Search miRNA - Disease</a></li>
-            <li><a href="#tab2">Search Disease - miRNA</a></li>
+            <li><a href="#about">Search  miRNA - Gene</a></li>
+            <li><a href="#tab2">Search miRNA - TF</a></li>
         </ul>
 
         <div class="tabContent" id="about">
@@ -61,10 +61,13 @@
             <div>
                 <form ="" method='post'>
                 
-               <tr><td><textarea name="user" value="" rows = "15" cols="80"></textarea></td></tr>
+            <tr><td><textarea name="user" value="" rows = "15" cols="80"></textarea></td></tr>
                 
                 
                 <input type="submit" name="submit" value="Submit"></form>
+
+               
+            
                               
                 
             </div>
@@ -86,7 +89,7 @@ require_once("dBaseAccess.php");
 $mirna = mysqli_real_escape_string($mirnabDb, $_POST['user']);
         
        $trimmed = array();
-             $str = preg_split('/,/', $mirna);
+               $str = preg_split('/,/', $mirna);
             $str = preg_split('/[,|\r\n|\r|\n]+/', $mirna);
         //echo json_encode($str);
             for ($i=0;$i<count($str);$i++) {
@@ -99,12 +102,11 @@ $mirna = mysqli_real_escape_string($mirnabDb, $_POST['user']);
         echo $strNew;
         
         $query = 
-           "SELECT mirna_name AS source
-           , dis_name AS target
-           , dis_reguln AS type
-           , dis_pubId 
-                from main_v2, disease 
-                where main_v2.link_id = disease.link_id
+           "SELECT distinct mirna_name as source
+           , gene_name as target
+           , gene_pubId as type 
+                from main_v2, gene_v2
+                where main_v2.link_id = gene_v2.link_id
                 AND mirna_name in ('".$strNew."')
                 LIMIT 30
                 ";
@@ -152,7 +154,7 @@ createGraph(jsonForm,"#graph");
             <div>
                 <form ="" method='post'>
                 
-           <tr><td><textarea name="user2" value="" rows = "15" cols="80"></textarea></td></tr>
+            <tr><td><textarea name="user2" value="" rows = "15" cols="80"></textarea></td></tr>
                 
                 
                 <input type="submit" name="submit" value="Submit"></form>
@@ -177,7 +179,7 @@ require_once("dBaseAccess.php");
 $mirna = mysqli_real_escape_string($mirnabDb, $_POST['user2']);
 
 $trimmed = array();
-            $str = preg_split('/,/', $mirna);
+              $str = preg_split('/,/', $mirna);
             $str = preg_split('/[,|\r\n|\r|\n]+/', $mirna);
         //echo json_encode($str);
             for ($i=0;$i<count($str);$i++) {
@@ -190,13 +192,13 @@ $trimmed = array();
         echo $strNew;
         
         $query = 
-           "SELECT mirna_name AS source
-           , dis_name AS target
-           , dis_reguln AS type
-           , dis_pubId 
-                from main_v2, disease 
-                where main_v2.link_id = disease.link_id
-                AND dis_name in ('".$strNew."')
+           "SELECT distinct mirna_name as target
+           ,up_tf as source
+            , up_regul as type
+            , up_pubId 
+            from main_v2, upstream_tf
+                where main_v2.link_id = upstream_tf.link_id
+                AND up_tf in ('".$strNew."')
                 LIMIT 30
                 ";
 
