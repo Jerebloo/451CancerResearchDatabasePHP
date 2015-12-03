@@ -57,7 +57,7 @@
         </ul>
 
         <div class="tabContent" id="about">
-            <h2>Please enter a query</h2>
+            <h2>Please enter one or more mirna_name</h2>
             <div>
                 <form ="" method='post'>
                 
@@ -148,7 +148,7 @@ createGraph(jsonForm,"#graph");
         </div>
 
 <div class="tabContent" id="tab2">
-            <h2>Please enter a query</h2>
+            <h2>Please enter one or more dis_name</h2>
             <div>
                 <form ="" method='post'>
                 

@@ -71,7 +71,7 @@ else
     var circle=svg.append("svg:g").selectAll("circle")
     .data(force.nodes())
     .enter().append("svg:circle")
-    .attr("r",6)
+    .attr("r",8)
     .call(force.drag);
 
     var text=svg.append("svg:g").selectAll("g")

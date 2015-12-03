@@ -2,14 +2,8 @@
 // the table rows, typically loaded from data file using d3.csv
     function createTable(passChoice,divChoice){
 
-    // Set the dimensions of the canvas / graph
-
-// Parse the date / time
-
-// Set the ranges
-
-
-// Get the data
+    //console.log(passChoice[1]);
+    var headers = Object.keys(passChoice[0]);
 
 // The table generation function
 function tabulate(passChoice, columns) {    
@@ -37,7 +31,16 @@ function tabulate(passChoice, columns) {
     var cells = rows.selectAll("td")
         .data(function(row) {
             return columns.map(function(column) {
-                return {column: column, value: row[column]};
+                console.log(row[column]);
+                var v = '';
+                if(!isNaN(row[column])) {
+                    url = "http://www.ncbi.nlm.nih.gov/pubmed?term=" + row[column];
+                    v = "<a href='" + url + "' target='_blank'>" + row[column] + " </a>"
+                }
+                else {
+                    v = row[column];
+                }
+                return {column: column, value: v};
             });
         })
         .enter()
@@ -49,6 +52,8 @@ function tabulate(passChoice, columns) {
 }
 
     // render the table
-    tabulate(passChoice, ["source", "target", "type"]);
+    tabulate(passChoice, headers);
+
+
 
 }

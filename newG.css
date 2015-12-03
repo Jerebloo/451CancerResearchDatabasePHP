@@ -15,12 +15,12 @@ marker#up-regulated ,marker#Up-regulated, marker#upregulated, marker#Upregulated
    fill: rgb(70,200,170);
 }
 
-path.link.down-regulated , path.link.Down-regulated, path.link.downregulated, path.link.Downregulated {
+path.link.down-regulated , path.link.Down-regulated, path.link.downregulated, path.link.Downregulated,path.link.Repression {
  
-  stroke: rgb(220,70,80);
+  stroke: rgb(250,150,140);
 }
 
-path.link.up-regulated , path.link.Up-regulated, path.link.upregulated, path.link.Upregulated{
+path.link.up-regulated , path.link.Up-regulated, path.link.upregulated, path.link.Upregulated, path.link.Activation, path.link.induction, path.link.Activates {
  
   stroke: rgb(100,240,200);
 
@@ -38,7 +38,7 @@ circle {
 }
 
 text {
-  font: 13px helvetica;
+  font: 18px helvetica;
   pointer-events: none;
   stroke:rgb(120,60,90);
 }

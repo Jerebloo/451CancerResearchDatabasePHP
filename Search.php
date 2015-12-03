@@ -1,7 +1,7 @@
 ﻿<?php
     require_once('dBaseAccess.php');
     //fetch table rows from mysql db
-    $sql = "select distinct mirna_name from main_v2 limit 10";
+    $sql = "select chem_name from chemical limit 10";
     $result = mysqli_query($mirnabDb, $sql) or die("Error in Selecting " . mysqli_error($mirnabDb));
 
     //create an array
@@ -10,6 +10,8 @@
         $reparray[] = mysqli_fetch_assoc($result);
     }
     $dropnames = json_encode($reparray);
+
+
 
     //close the db connection
    // mysqli_close($connection);
@@ -22,35 +24,6 @@ var pech =
 echo $dropnames;
 ?>
 
-<?PHP
-
-require_once("dBaseAccess.php");
-
-$query = 
-"select distinct 
-    mirna_name AS source, 
-    dis_name AS target, 
-    dis_reguln AS type
-from main_v2 , disease 
-where mirna_name = 'hsa-mir-21' 
-limit 30";
-
-$result = mysqli_query($mirnabDb,$query);
-
- if ( ! $result ) {
-        echo mysql_error();
-        die;
-    }
-
-//$data = array();
-
-  for ($x = 0; $x < mysqli_num_rows($result); $x++) {
-        $data[] = mysqli_fetch_assoc($result);
-    }
-$jsonForm = json_encode($data);
-
-
-?>
 
 </script>
 <html>
@@ -68,7 +41,6 @@ $jsonForm = json_encode($data);
     <!-- Bootstrap core CSS -->
     <link href="bootstrap-3.3.5-dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Custom styles for this template -->
-    <link rel="stylesheet" href="newG.css">
     <link rel="stylesheet" href="table.css">
      <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
  
@@ -122,19 +94,21 @@ $jsonForm = json_encode($data);
     <!-- Placed at the end of the document so the pages load faster -->
 
     <script>
+        //console.log(pech[0]);
         window.onload = function () 
         {
             var JSON = pech, 
             select = document.getElementById("selector");
             var option = document.createElement("option");
-            option.value = "Select miRNA";
-            option.textContent = "Select miRNA";
+            option.value = "Select chemical";
+            option.textContent = "Select chemical";
             select.appendChild(option);
 
 
-            for (var i = 0 ;  i < JSON.length; i++)
+            for (var i = 0 ;  i < pech.length; i++)
             {   at = JSON[i];
-                name = at.mirna_name;
+                //console.log(at);
+                name = at.chem_name;
                 var option = document.createElement("option");
                 option.value = name;
                 option.textContent = name;
@@ -149,7 +123,6 @@ $jsonForm = json_encode($data);
 
  
  <script src="table.js"></script>
- <script src="newGraph.js"></script>
 <script>
     $("#selector").change(function() {
         // gets the miRNA selected using dropdown
@@ -165,9 +138,7 @@ $jsonForm = json_encode($data);
                // if data is not empty
                if(data){
                     $("#table").empty();
-                    $("#graph svg").remove();
                     createTable(data,"#table");
-                    createGraph(data,"#graph");
                 }
                 else {
                     alert("No results for the selected miRNA. Select a different miRNA.");

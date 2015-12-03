@@ -7,12 +7,10 @@
 		$mirna = mysqli_real_escape_string($mirnabDb, $_POST['mirna']);
 		
 		$query = 
-			"SELECT DISTINCT 
-			    mirna_name AS source, 
-			    dis_name AS target, 
-			    dis_reguln AS type
-			FROM main_v2, disease 
-			WHERE main_v2.link_id = disease.link_id AND mirna_name = '".$mirna."' LIMIT 30";
+			"SELECT chem_name , mirna_name, response, cond, tech 
+			from chemical, main_v2 
+			where main_v2.chem_id=chemical.chem_id 
+			and chem_name in ('".$mirna."')  LIMIT 10";
 
 		$result = mysqli_query($mirnabDb, $query);
 
