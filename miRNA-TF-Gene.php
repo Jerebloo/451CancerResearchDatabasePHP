@@ -67,10 +67,6 @@
                 
                 <input type="submit" name="submit" value="Submit"></form>
 
-               
-            
-                              
-                
             </div>
 
             <div class="row">
@@ -140,7 +136,9 @@ $jsonForm = json_encode($data);
 var jsonForm = <?php echo $jsonForm; ?>;
 
 
-createTable(jsonForm,"#table"); 
+var header = ["miRNA","Gene","PubId"];
+
+createTable(jsonForm,"#table",header,"source"); 
 createGraph(jsonForm,"#graph");
 
 
@@ -226,7 +224,9 @@ $jsonForm2 = json_encode($data);
 var jsonForm2 = <?php echo $jsonForm2; ?>;
 
 
-createTable(jsonForm2,"#table"); 
+var header = ["miRNA","Tf","Regulation","PubId"];
+
+createTable(jsonForm2,"#table",header,"target"); 
 createGraph(jsonForm2,"#graph");
 
 

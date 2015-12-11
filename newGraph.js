@@ -16,34 +16,52 @@ function createGraph(jsonData,tabDiv)
       return 0;
     }
   }
-});for(var i=0;i<jsonData.length;i++)
+});
 
-{
-  if(i!=0&&jsonData[i].source==jsonData[i-1].source&&jsonData[i].target==jsonData[i-1].target)
-  {jsonData[i].linknum=jsonData[i-1].linknum+1;}
-else
+for(var i=0;i<jsonData.length;i++) {
+  if(i!=0&&jsonData[i].source==jsonData[i-1].source&&jsonData[i].target==jsonData[i-1].target) {
+    jsonData[i].linknum=jsonData[i-1].linknum+1;
+  }
+  else
   {
-    jsonData[i].linknum=1;};};
-    var nodes={};jsonData.forEach(function(link){link.source=nodes[link.source]
-      ||(nodes[link.source]={name:link.source});link.target=nodes[link.target]
-      ||(nodes[link.target]={name:link.target});});
+    jsonData[i].linknum=1;
+  }
+}
+    var nodes={};
+    jsonData.forEach(function(link){
+      link.source = nodes[link.source] || (nodes[link.source]={name:link.source});
+      link.target = nodes[link.target] || (nodes[link.target]={name:link.target});
+      //console.log(nodes[link.source], typeof nodes[link.target]);
+      //console.log(nodes);
+    });
 
+    //console.log(Object.keys(nodes));
+    for(var k in nodes) {
+      if(nodes[k].name.indexOf("hsa") > -1) {
+        nodes[k]["group"] = 0;
+      }
+      else {
+        nodes[k]["group"] = 1;
+      }
+    }
     var arrows=[];
 
     for(var i=0;i<jsonData.length;i++){arrows[i]=jsonData[i].type;};
 
-      //var w=1000,h=800;
-      var w=500,h=800;
-      var w = document.getElementById("graph").offsetWidth;
+    //var w=1000,h=800;
+    var w=500,h=800;
+    var w = document.getElementById("graph").offsetWidth;
 
-      var force=d3.layout.force()
-      .nodes(d3.values(nodes))
-      .links(jsonData)
-      .size([w,h])
-      .linkDistance(300)
-      .charge(-300)
-      .on("tick",tick)
-      .start();
+    var force=d3.layout.force()
+    .nodes(d3.values(nodes))
+    .links(jsonData)
+    .size([w,h])
+    .linkDistance(300)
+    .charge(-300)
+    .on("tick",tick)
+    .start();
+
+    var color = d3.scale.category10();
 
     var svg=d3.select(tabDiv)
     .append("svg:svg")
@@ -72,6 +90,9 @@ else
     .data(force.nodes())
     .enter().append("svg:circle")
     .attr("r",8)
+    .style("fill", function(d) {
+      return color(d.group);
+    })
     .call(force.drag);
 
     var text=svg.append("svg:g").selectAll("g")

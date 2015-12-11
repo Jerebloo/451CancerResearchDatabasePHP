@@ -7,10 +7,10 @@
 		$mirna = mysqli_real_escape_string($mirnabDb, $_POST['mirna']);
 		
 		$query = 
-			"SELECT chem_name , mirna_name, response, cond, tech 
+			"SELECT chem_name , mirna_name, response, cond, tech, chem_pubId, chem_ctd_id
 			from chemical, main_v2 
 			where main_v2.chem_id=chemical.chem_id 
-			and chem_name in ('".$mirna."')  LIMIT 10";
+			and chem_name in ('".$mirna."')  LIMIT 30";
 
 		$result = mysqli_query($mirnabDb, $query);
 

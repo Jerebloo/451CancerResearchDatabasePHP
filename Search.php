@@ -10,20 +10,13 @@
         $reparray[] = mysqli_fetch_assoc($result);
     }
     $dropnames = json_encode($reparray);
-
-
-
     //close the db connection
    // mysqli_close($connection);
     
 ?>
 
 <script>
-var pech = 
-<?php 
-echo $dropnames;
-?>
-
+var pech = <?php echo $dropnames; ?>;
 
 </script>
 <html>
@@ -41,9 +34,13 @@ echo $dropnames;
     <!-- Bootstrap core CSS -->
     <link href="bootstrap-3.3.5-dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Custom styles for this template -->
-    <link rel="stylesheet" href="table.css">
+    <link rel="stylesheet" href="googleTableCss.css">
      <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
- 
+    <script src= "http://www.google.com/uds/modules/gviz/gviz-api.js"> </script>
+    <script src= "https://www.google.com/jsapi"> </script>
+    <script type="text/javascript">
+        google.load('visualization', '1', {packages: ['table']});
+    </script>
    
 </head>
 <body>
@@ -78,12 +75,14 @@ echo $dropnames;
                     <p>This page will allow you to search the database.</p>
                     <select id="selector"> </select>
 
-                    <div class="row">
-                        <div class="col-lg-4 col-md-6 col-sm-6" id="table"> 
-                        </div>
-                        <div class="col-lg-8 col-md-6 col-sm-6" id="graph">
-                        </div>
-                    </div>
+    <div class="row">
+      <div class="col-sm-3"></div>
+      <div class="col-sm-6"> </div>
+      <!--  style="display: none" -->
+      <div class="col-sm-3"></div>
+    </div>
+    <div id="tableGoogle"></div>
+    <span id="pageCnt"></span>
 
                 </div>
 
@@ -122,8 +121,43 @@ echo $dropnames;
 
 
  
- <script src="table.js"></script>
 <script>
+   function drawTable(jsonData) {
+    
+    var dataT = new google.visualization.DataTable();
+    var numRows = jsonData.length;
+    dataT.addRows(numRows);
+    console.log(numRows, " rows added");
+
+    dataT.addColumn('string', 'Chemical');
+    dataT.addColumn('string', 'miRNA');
+    dataT.addColumn('string', 'Response');
+    dataT.addColumn('string', 'Condition');
+    dataT.addColumn('string', 'Tech');
+    dataT.addColumn('string', 'PubId');
+
+    var url = '',
+        pubmed = '';
+
+    for (var iter = 0; iter < numRows; iter++) {
+        dataT.setCell(iter, 0, jsonData[iter]['chem_name']);
+        dataT.setCell(iter, 1, jsonData[iter]['mirna_name']);
+        dataT.setCell(iter, 2, jsonData[iter]['response']);
+        dataT.setCell(iter, 3, jsonData[iter]['cond']);
+        dataT.setCell(iter, 4, jsonData[iter]['tech']);
+        url = 'http://www.ncbi.nlm.nih.gov/pubmed?term=' + jsonData[iter]['chem_pubId'];
+        pubmed = '<a href="' + url + '" target="_blank">' + jsonData[iter]['chem_pubId'] + '</a>';
+        dataT.setCell(iter, 5, jsonData[iter]['chem_pubId']); //pubmed);
+    };
+
+    var options = {allowHtml: true, alternatingRowStyle: true}; 
+    //options['cssClassNames'] = cssNamesOne;
+    options['page'] = 'enable'; options['pageSize'] = 10; options['pagingSymbols'] = {prev: 'prev', next: 'next'}; //options['pagingButtonsConfiguration'] = 'auto';
+    
+    var table = new google.visualization.Table(document.getElementById('tableGoogle'));
+    table.draw(dataT, options); // , {showRowNumber: true, width: '100%', height: '100%'});
+  }
+
     $("#selector").change(function() {
         // gets the miRNA selected using dropdown
         var mirnaSelected = $(this).val();
@@ -133,12 +167,14 @@ echo $dropnames;
             url: 'queries.php',
             type: 'POST',
             data: {'mirna': mirnaSelected, 'flag': 100},
-            dataType: "json",
+            //dataType: "json",
             success: function(data) {
                // if data is not empty
                if(data){
                     $("#table").empty();
-                    createTable(data,"#table");
+                    var header = ["Chemical","miRNA","Response","Condition","Tech","PubId"];
+                    drawTable(JSON.parse(data));
+                    //$("#table").show();
                 }
                 else {
                     alert("No results for the selected miRNA. Select a different miRNA.");

@@ -1,6 +1,6 @@
 
 // the table rows, typically loaded from data file using d3.csv
-    function createTable(passChoice,divChoice){
+    function createTable(passChoice,divChoice,header,declareMirna){
 
     //console.log(passChoice[1]);
     var headers = Object.keys(passChoice[0]);
@@ -16,7 +16,7 @@ function tabulate(passChoice, columns) {
     // append the header row
     thead.append("tr")
         .selectAll("th")
-        .data(columns)
+        .data(header)
         .enter()
         .append("th")
             .text(function(column) { return column; });
@@ -31,16 +31,38 @@ function tabulate(passChoice, columns) {
     var cells = rows.selectAll("td")
         .data(function(row) {
             return columns.map(function(column) {
-                console.log(row[column]);
+
+                //console.log(row[column]);
+                //console.log(column);
                 var v = '';
-                if(!isNaN(row[column])) {
+                if(column == "up_pubId" || column == "gene_pubId" ||column == "dis_pubId"|| column=="chem_pubId"){
                     url = "http://www.ncbi.nlm.nih.gov/pubmed?term=" + row[column];
                     v = "<a href='" + url + "' target='_blank'>" + row[column] + " </a>"
                 }
+                
+
+                else if (column==declareMirna)
+                {
+                 url = 'http://www.mirbase.org/cgi-bin/query.pl?terms='+ row[column] +'&submit=Search';
+                    v = "<a href='" + url + "' target='_blank'>" + row[column] + " </a>"
+                }
+
+                else if (column=="chem_name")
+                {
+                    url = 'http://ctdbase.org/detail.go?type=chem&acc='+ row["chem_ctd_id"];
+                    v = "<a href='" + url + "' target='_blank'>" + row[column] + " </a>"
+                }
+
+                else if(column=="chem_ctd_id")
+                {
+
+                }
+
                 else {
                     v = row[column];
                 }
                 return {column: column, value: v};
+
             });
         })
         .enter()

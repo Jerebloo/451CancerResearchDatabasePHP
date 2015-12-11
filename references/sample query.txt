@@ -1,0 +1,7 @@
+select distinct 
+    mirna_name AS source, 
+    dis_name AS target, 
+    dis_reguln AS type
+from main_v2 , disease 
+where mirna_name = 'hsa-mir-21' 
+limit 30

@@ -134,15 +134,47 @@ $jsonForm = json_encode($data);
 
                   <script src="newGraph.js"></script>
 <script>
+
+
+
 var jsonForm = <?php echo $jsonForm; ?>;
 
+var header = ["miRNA","Disease","Regulation","PubId"];
 
-createTable(jsonForm,"#table"); 
+createTable(jsonForm,"#table",header,"source"); 
 createGraph(jsonForm,"#graph");
-
 
 </script>  
 
+<div id="numberingDiv" style="font-size: 12px;">
+                            Total rows: <!--span id="pageNumbering"></span> out of <--> <span id="pageCnt"></span>
+                                <select style="font-size: 12px" id="numberOfPagesSelect" onchange="setNumberOfPagesDown(this.value)">
+                                  <option value="">No paging</option>
+                              <option selected="selected" value="10">10</option>
+                                                      <option value="25">25</option>
+                                                      <option value="50">50</option>
+                                                      <option value="100">100</option>
+                                </select>
+                        </div>
+
+                        <script>
+                        function setNumberOfPagesDown(value) {
+
+                            if(value) {
+            options['pageSize'] = parseInt(value, 10);
+            options['page'] = 'enable';
+        } else {
+            options['pageSize'] = null;
+            options['page'] = null;
+        }
+
+          var jsonForm = <?php echo $jsonForm; ?>;
+
+          createTable(jsonForm,"#table",header,"source");
+
+
+    }
+                        </script>
          
  
         </div>
@@ -166,6 +198,8 @@ createGraph(jsonForm,"#graph");
                         <div class="col-lg-8 col-md-6 col-sm-6" id="graph">
                         </div>
                     </div>
+                  
+     
 
 
 <?php
@@ -200,6 +234,7 @@ $trimmed = array();
                 LIMIT 30
                 ";
 
+
 $result = mysqli_query($mirnabDb,$query);
 
 //echo $result;
@@ -223,7 +258,9 @@ $jsonForm2 = json_encode($data);
 var jsonForm2 = <?php echo $jsonForm2; ?>;
 
 
-createTable(jsonForm2,"#table"); 
+var header = ["miRNA","Disease","Regulation","PubId"];
+
+createTable(jsonForm2,"#table",header,"source"); 
 createGraph(jsonForm2,"#graph");
 
 
@@ -233,7 +270,8 @@ createGraph(jsonForm2,"#graph");
 
 
     </div><!--/.container-fluid -->
-     
+
+    
             
      <!-- /container -->
     <!-- Bootstrap core JavaScript
