@@ -1,5 +1,3 @@
-
-
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -18,6 +16,12 @@
     <script src="tabScript.js"></script>
     <script src="table.js"></script>
     <link rel="stylesheet" href="table.css">
+     <link rel="stylesheet" href="googleTableCss.css">
+    <script src= "http://www.google.com/uds/modules/gviz/gviz-api.js"> </script>
+    <script src= "https://www.google.com/jsapi"> </script>
+    <script type="text/javascript">
+        google.load('visualization', '1', {packages: ['table']});
+    </script>
 </head>
 <body onload="init()">
     <div class="container">
@@ -63,26 +67,27 @@
                 
                <tr><td><textarea name="user" value="" rows = "15" cols="80"></textarea></td></tr>
                 
-                
                 <input type="submit" name="submit" value="Submit"></form>
                               
                 
             </div>
 
-            <div class="row">
-                        <div class="col-lg-4 col-md-6 col-sm-6" id="table"> 
+           <div class="row">
+      <div class="col-sm-3"></div>
+      <div class="col-sm-6"> </div>
+      <!--  style="display: none" -->
+      <div class="col-sm-3"></div>
+    </div>
+    <div id="table"></div>
+    <span id="pageCnt"></span>
+    <div class="col-lg-8 col-md-6 col-sm-6" id="graph">
                         </div>
-                        <div class="col-lg-8 col-md-6 col-sm-6" id="graph">
-                        </div>
-                    </div>
 
 
 <?php
 if ( ! empty($_POST['user'])){
     $name = $_POST['user'];
-
 require_once("dBaseAccess.php");
-
 $mirna = mysqli_real_escape_string($mirnabDb, $_POST['user']);
         
        $trimmed = array();
@@ -92,10 +97,8 @@ $mirna = mysqli_real_escape_string($mirnabDb, $_POST['user']);
             for ($i=0;$i<count($str);$i++) {
                     $trimmed[$i] = trim($str[$i]);
             }
-
         $strNew = implode("','", $trimmed);
         $strNew = str_replace('\r\n',"','" , $strNew);
-
         echo $strNew;
         
         $query = 
@@ -108,74 +111,59 @@ $mirna = mysqli_real_escape_string($mirnabDb, $_POST['user']);
                 AND mirna_name in ('".$strNew."')
                 LIMIT 30
                 ";
-
 $result = mysqli_query($mirnabDb,$query);
-
 //echo $result;
-
  if ( ! $result ) {
         echo mysql_error();
         die;
     }
-
 $data = array();
-
   for ($x = 0; $x < mysqli_num_rows($result); $x++) {
         $data[] = mysqli_fetch_assoc($result);
     }
 $jsonForm = json_encode($data);
-
 //echo $jsonForm;
-
 }
-
 ?>
-
-
                   <script src="newGraph.js"></script>
+
 <script>
+   function drawTable(jsonData) {
+    
+    var dataT = new google.visualization.DataTable();
+    var numRows = jsonData.length;
+    dataT.addRows(numRows);
+    console.log(numRows, " rows added");
 
+    dataT.addColumn('string', 'miRNA');
+    dataT.addColumn('string', 'Disease');
+    dataT.addColumn('string', 'Regulation');
+    dataT.addColumn('string', 'PubId');
 
+    var url = '',
+        pubmed = '';
 
-var jsonForm = <?php echo $jsonForm; ?>;
+    for (var iter = 0; iter < numRows; iter++) {
+        dataT.setCell(iter, 0, jsonData[iter]['source']);
+        dataT.setCell(iter, 1, jsonData[iter]['target']);
+        dataT.setCell(iter, 2, jsonData[iter]['type']);
+        dataT.setCell(iter, 3, jsonData[iter]['dis_pubId']);
+    };
 
-var header = ["miRNA","Disease","Regulation","PubId"];
+    var options = {allowHtml: true, alternatingRowStyle: true}; 
+    //options['cssClassNames'] = cssNamesOne;
+    options['page'] = 'enable'; options['pageSize'] = 10; options['pagingSymbols'] = {prev: 'prev', next: 'next'}; //options['pagingButtonsConfiguration'] = 'auto';
+    
+    var table = new google.visualization.Table(document.getElementById('table'));
+    table.draw(dataT, options); // , {showRowNumber: true, width: '100%', height: '100%'});
+  }
+</script>
 
-createTable(jsonForm,"#table",header,"source"); 
+<script>
+var jsonForm = <?php echo $jsonForm;?>;
+drawTable(jsonForm);
 createGraph(jsonForm,"#graph");
-
 </script>  
-
-<div id="numberingDiv" style="font-size: 12px;">
-                            Total rows: <!--span id="pageNumbering"></span> out of <--> <span id="pageCnt"></span>
-                                <select style="font-size: 12px" id="numberOfPagesSelect" onchange="setNumberOfPagesDown(this.value)">
-                                  <option value="">No paging</option>
-                              <option selected="selected" value="10">10</option>
-                                                      <option value="25">25</option>
-                                                      <option value="50">50</option>
-                                                      <option value="100">100</option>
-                                </select>
-                        </div>
-
-                        <script>
-                        function setNumberOfPagesDown(value) {
-
-                            if(value) {
-            options['pageSize'] = parseInt(value, 10);
-            options['page'] = 'enable';
-        } else {
-            options['pageSize'] = null;
-            options['page'] = null;
-        }
-
-          var jsonForm = <?php echo $jsonForm; ?>;
-
-          createTable(jsonForm,"#table",header,"source");
-
-
-    }
-                        </script>
-         
  
         </div>
 
@@ -188,28 +176,25 @@ createGraph(jsonForm,"#graph");
                 
                 
                 <input type="submit" name="submit" value="Submit"></form>
-                              
-                
+                    
             </div>
 
             <div class="row">
-                        <div class="col-lg-4 col-md-6 col-sm-6" id="table"> 
-                        </div>
-                        <div class="col-lg-8 col-md-6 col-sm-6" id="graph">
-                        </div>
-                    </div>
-                  
-     
-
+      <div class="col-sm-3"></div>
+      <div class="col-sm-6"> </div>
+      <!--  style="display: none" -->
+      <div class="col-sm-3"></div>
+    </div>
+    <div id="table"></div>
+    <span id="pageCnt"></span>
+    <div class="col-lg-8 col-md-6 col-sm-6" id="graph">
+                        </div>    
 
 <?php
 if ( ! empty($_POST['user2'])){
     $name = $_POST['user2'];
-
 require_once("dBaseAccess.php");
-
 $mirna = mysqli_real_escape_string($mirnabDb, $_POST['user2']);
-
 $trimmed = array();
             $str = preg_split('/,/', $mirna);
             $str = preg_split('/[,|\r\n|\r|\n]+/', $mirna);
@@ -217,10 +202,8 @@ $trimmed = array();
             for ($i=0;$i<count($str);$i++) {
                     $trimmed[$i] = trim($str[$i]);
             }
-
         $strNew = implode("','", $trimmed);
         $strNew = str_replace('\r\n',"','" , $strNew);
-
         echo $strNew;
         
         $query = 
@@ -233,41 +216,39 @@ $trimmed = array();
                 AND dis_name in ('".$strNew."')
                 LIMIT 30
                 ";
-
-
 $result = mysqli_query($mirnabDb,$query);
-
 //echo $result;
-
  if ( ! $result ) {
         echo mysql_error();
         die;
     }
-
 $data = array();
-
   for ($x = 0; $x < mysqli_num_rows($result); $x++) {
         $data[] = mysqli_fetch_assoc($result);
     }
 $jsonForm2 = json_encode($data);
-
 }
-
 ?>
+
 <script>
 var jsonForm2 = <?php echo $jsonForm2; ?>;
-
-
-var header = ["miRNA","Disease","Regulation","PubId"];
-
-createTable(jsonForm2,"#table",header,"source"); 
+drawTable(jsonForm2);
 createGraph(jsonForm2,"#graph");
-
-
 </script>
  
         </div>
 
+
+<div>
+        <input type="range" min="0" max="1" value="0" step=".1" onchange="showValue(this.value)" />
+<span id="range">0</span>
+<script type="text/javascript">
+function showValue(newValue)
+{
+    document.getElementById("range").innerHTML=newValue;
+}
+</script>
+</div>
 
     </div><!--/.container-fluid -->
 

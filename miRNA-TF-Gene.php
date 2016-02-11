@@ -18,6 +18,12 @@
     <script src="tabScript.js"></script>
     <script src="table.js"></script>
     <link rel="stylesheet" href="table.css">
+     <link rel="stylesheet" href="googleTableCss.css">
+    <script src= "http://www.google.com/uds/modules/gviz/gviz-api.js"> </script>
+    <script src= "https://www.google.com/jsapi"> </script>
+    <script type="text/javascript">
+        google.load('visualization', '1', {packages: ['table']});
+    </script>
 </head>
 <body onload="init()">
     <div class="container">
@@ -70,12 +76,15 @@
             </div>
 
             <div class="row">
-                        <div class="col-lg-4 col-md-6 col-sm-6" id="table"> 
-                        </div>
-                        <div class="col-lg-8 col-md-6 col-sm-6" id="graph">
-                        </div>
-                    </div>
-
+      <div class="col-sm-3"></div>
+      <div class="col-sm-6"> </div>
+      <!--  style="display: none" -->
+      <div class="col-sm-3"></div>
+    </div>
+    <div id="table"></div>
+    <span id="pageCnt"></span>
+    <div class="col-lg-8 col-md-6 col-sm-6" id="graph">
+                        </div>  
 
 <?php
 if ( ! empty($_POST['user'])){
@@ -130,15 +139,43 @@ $jsonForm = json_encode($data);
 
 ?>
 
+<script>
+   function drawTable1(jsonData) {
+    
+    var dataT = new google.visualization.DataTable();
+    var numRows = jsonData.length;
+    dataT.addRows(numRows);
+    console.log(numRows, " rows added");
+
+    dataT.addColumn('string', 'miRNA');
+    dataT.addColumn('string', 'Gene');
+    dataT.addColumn('string', 'PubId');
+
+    var url = '',
+        pubmed = '';
+
+    for (var iter = 0; iter < numRows; iter++) {
+        dataT.setCell(iter, 0, jsonData[iter]['source']);
+        dataT.setCell(iter, 1, jsonData[iter]['target']);
+        dataT.setCell(iter, 2, jsonData[iter]['type']);
+    };
+
+    var options = {allowHtml: true, alternatingRowStyle: true}; 
+    //options['cssClassNames'] = cssNamesOne;
+    options['page'] = 'enable'; options['pageSize'] = 10; options['pagingSymbols'] = {prev: 'prev', next: 'next'}; //options['pagingButtonsConfiguration'] = 'auto';
+    
+    var table = new google.visualization.Table(document.getElementById('table'));
+    table.draw(dataT, options); // , {showRowNumber: true, width: '100%', height: '100%'});
+  }
+</script>
+
 
                   <script src="newGraph.js"></script>
 <script>
 var jsonForm = <?php echo $jsonForm; ?>;
 
+drawTable1(jsonForm);
 
-var header = ["miRNA","Gene","PubId"];
-
-createTable(jsonForm,"#table",header,"source"); 
 createGraph(jsonForm,"#graph");
 
 
@@ -161,12 +198,16 @@ createGraph(jsonForm,"#graph");
                 
             </div>
 
-            <div class="row">
-                        <div class="col-lg-4 col-md-6 col-sm-6" id="table"> 
-                        </div>
-                        <div class="col-lg-8 col-md-6 col-sm-6" id="graph">
-                        </div>
-                    </div>
+           <div class="row">
+      <div class="col-sm-3"></div>
+      <div class="col-sm-6"> </div>
+      <!--  style="display: none" -->
+      <div class="col-sm-3"></div>
+    </div>
+    <div id="table"></div>
+    <span id="pageCnt"></span>
+    <div class="col-lg-8 col-md-6 col-sm-6" id="graph">
+                        </div>  
 
 
 <?php
@@ -219,17 +260,46 @@ $jsonForm2 = json_encode($data);
 
 }
 
+
+
 ?>
+
+<script>
+   function drawTable2(jsonData) {
+    
+    var dataT = new google.visualization.DataTable();
+    var numRows = jsonData.length;
+    dataT.addRows(numRows);
+    console.log(numRows, " rows added");
+
+    dataT.addColumn('string', 'miRNA');
+    dataT.addColumn('string', 'Tf');
+    dataT.addColumn('string', 'Regulation');
+    dataT.addColumn('string', 'PubId');
+
+    var url = '',
+        pubmed = '';
+
+    for (var iter = 0; iter < numRows; iter++) {
+        dataT.setCell(iter, 0, jsonData[iter]['source']);
+        dataT.setCell(iter, 1, jsonData[iter]['target']);
+        dataT.setCell(iter, 2, jsonData[iter]['type']);
+        dataT.setCell(iter, 2, jsonData[iter]['PubId']);
+    };
+
+    var options = {allowHtml: true, alternatingRowStyle: true}; 
+    //options['cssClassNames'] = cssNamesOne;
+    options['page'] = 'enable'; options['pageSize'] = 10; options['pagingSymbols'] = {prev: 'prev', next: 'next'}; //options['pagingButtonsConfiguration'] = 'auto';
+    
+    var table = new google.visualization.Table(document.getElementById('table'));
+    table.draw(dataT, options); // , {showRowNumber: true, width: '100%', height: '100%'});
+  }
+</script>
+
 <script>
 var jsonForm2 = <?php echo $jsonForm2; ?>;
-
-
-var header = ["miRNA","Tf","Regulation","PubId"];
-
-createTable(jsonForm2,"#table",header,"target"); 
+drawTable2(jsonForm2);
 createGraph(jsonForm2,"#graph");
-
-
 </script>
  
         </div>

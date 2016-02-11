@@ -74,11 +74,11 @@ for(var i=0;i<jsonData.length;i++) {
     .attr("id",String).attr("viewBox","0 -5 10 10")
     .attr("refX",15)
     .attr("refY",-1.5)
-    .attr("markerWidth",3)
-    .attr("markerHeight",3)
+    .attr("markerWidth",2)
+    .attr("markerHeight",6)
     .attr("orient","auto")
     .append("svg:path")
-    .attr("d","M0,-5L10,0L0,5");
+    .attr("d","M-100,-50L100,0L0,200");
 
     var path=svg.append("svg:g").selectAll("path")
     .data(force.links())
@@ -89,7 +89,7 @@ for(var i=0;i<jsonData.length;i++) {
     var circle=svg.append("svg:g").selectAll("circle")
     .data(force.nodes())
     .enter().append("svg:circle")
-    .attr("r",8)
+    .attr("r",5)
     .style("fill", function(d) {
       return color(d.group);
     })

@@ -1,4 +1,4 @@
-﻿<?php
+﻿33<?php
     require_once('dBaseAccess.php');
     //fetch table rows from mysql db
     $sql = "select chem_name from chemical limit 10";
