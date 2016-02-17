@@ -71,14 +71,14 @@ for(var i=0;i<jsonData.length;i++) {
     svg.append("svg:defs").selectAll("marker")
     .data(arrows)
     .enter().append("svg:marker")
-    .attr("id",String).attr("viewBox","0 -5 10 10")
+    .attr("id",String).attr("viewBox","0 -5 7 10")
     .attr("refX",15)
     .attr("refY",-1.5)
     .attr("markerWidth",2)
     .attr("markerHeight",6)
     .attr("orient","auto")
     .append("svg:path")
-    .attr("d","M-100,-50L100,0L0,200");
+    .attr("d","M-100,-100L100,0L0,200");
 
     var path=svg.append("svg:g").selectAll("path")
     .data(force.links())

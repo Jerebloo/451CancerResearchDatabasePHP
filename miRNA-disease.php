@@ -65,7 +65,7 @@
             <div>
                 <form ="" method='post'>
                 
-               <tr><td><textarea name="user" value="" rows = "15" cols="80"></textarea></td></tr>
+               <tr><td><textarea name="user" value="" rows = "3" cols="80"></textarea></td></tr>
                 
                 <input type="submit" name="submit" value="Submit"></form>
                               
@@ -80,7 +80,7 @@
     </div>
     <div id="table"></div>
     <span id="pageCnt"></span>
-    <div class="col-lg-8 col-md-6 col-sm-6" id="graph">
+    <div  id="graph">
                         </div>
 
 
