@@ -25,7 +25,6 @@
         google.load('visualization', '1', {packages: ['table']});
     </script>
 </head>
-<body onload="init()">
     <div class="container">
         <!-- Static navbar -->
         <nav class="navbar navbar-default">
@@ -57,23 +56,23 @@
          
             <p>This page will alow you to search the database.</p>
         </div>
-    
-        <ul id="tabs">
-            <li><a href="#about">Search  miRNA - Gene</a></li>
-            <li><a href="#tab2">Search miRNA - TF</a></li>
-        </ul>
 
-        <div class="tabContent" id="about">
-            <h2>Please enter one or more mirna_name</h2>
+
             <div>
+
                 <form ="" method='post'>
                 
-            <tr><td><textarea name="user" value="" rows = "15" cols="80"></textarea></td></tr>
+               <p>Enter miRNAs: <p> 
+               <tr><td><textarea name="mirna" value="" rows = "3" cols="80"></textarea></td></tr>
+               <p>Enter Genes: <p> 
+               <tr><td><textarea name="gene" value="" rows = "3" cols="80"></textarea></td></tr>
+               <p>Enter TF: <p> 
+               <tr><td><textarea name="tf" value="" rows = "3" cols="80"></textarea></td></tr>
                 
+                <input type="submit" name="submit" value="Submit"></form>      
                 
-                <input type="submit" name="submit" value="Submit"></form>
-
             </div>
+
 
             <div class="row">
       <div class="col-sm-3"></div>
@@ -87,12 +86,13 @@
                         </div>  
 
 <?php
-if ( ! empty($_POST['user'])){
-    $name = $_POST['user'];
+
+if ( ! empty($_POST['mirna']) and ! empty($_POST['gene']) and ! empty($_POST['tf'])){
+   
 
 require_once("dBaseAccess.php");
 
-$mirna = mysqli_real_escape_string($mirnabDb, $_POST['user']);
+$mirna = mysqli_real_escape_string($mirnabDb, $_POST['mirna']);
         
        $trimmed = array();
                $str = preg_split('/,/', $mirna);
@@ -102,20 +102,49 @@ $mirna = mysqli_real_escape_string($mirnabDb, $_POST['user']);
                     $trimmed[$i] = trim($str[$i]);
             }
 
-        $strNew = implode("','", $trimmed);
-        $strNew = str_replace('\r\n',"','" , $strNew);
+        $mirnaString = implode("','", $trimmed);
+        $mirnaString = str_replace('\r\n',"','" , $mirnaString);
 
-        echo $strNew;
+$gene = mysqli_real_escape_string($mirnabDb, $_POST['gene']);
+
+        $trimmed2 = array();
+               $str2 = preg_split('/,/', $gene);
+            $str2 = preg_split('/[,|\r\n|\r|\n]+/', $gene);
+        //echo json_encode($str);
+            for ($h=0;$h<count($str2);$h++) {
+                    $trimmed2[$h] = trim($str2[$h]);
+            }
+
+        $geneString = implode("','", $trimmed2);
+        $geneString = str_replace('\r\n',"','" , $geneString);
+
+$tf = mysqli_real_escape_string($mirnabDb, $_POST['tf']);
+
+        $trimmed3 = array();
+               $str3 = preg_split('/,/', $tf);
+            $str3 = preg_split('/[,|\r\n|\r|\n]+/', $tf);
+        //echo json_encode($str);
+            for ($j=0;$j<count($str3);$j++) {
+                    $trimmed3[$j] = trim($str3[$j]);
+            }
+
+        $tfString = implode("','", $trimmed3);
+        $tfString = str_replace('\r\n',"','" , $tfString);
         
         $query = 
-           "SELECT distinct mirna_name as source
-           , gene_name as target
-           , gene_pubId as type 
-                from main_v2, gene_v2
-                where main_v2.link_id = gene_v2.link_id
-                AND mirna_name in ('".$strNew."')
-                LIMIT 30
-                ";
+          "SELECT 
+            distinct 
+                mirna_name as source, 
+                up_tf as target, 
+                gene_name as type, 
+                gene_pubId
+            from main_v2, upstream_tf,gene_v2
+            where main_v2.link_id = upstream_tf.link_id
+            and main_v2.link_id = gene_v2.link_id
+            and mirna_name in ('".$mirnaString."')
+            and up_tf in ('".$tfString."')
+            and gene_name in ('".$geneString."')
+            limit 30";         
 
 $result = mysqli_query($mirnabDb,$query);
 
@@ -131,16 +160,396 @@ $data = array();
   for ($x = 0; $x < mysqli_num_rows($result); $x++) {
         $data[] = mysqli_fetch_assoc($result);
     }
+
 $jsonForm = json_encode($data);
 
-//echo $jsonForm;
+}// end if check for all 3 inputs
+
+else if ( ! empty($_POST['mirna']) and ! empty($_POST['gene']) and empty($_POST['tf'])){
+   
+
+require_once("dBaseAccess.php");
+
+$mirna = mysqli_real_escape_string($mirnabDb, $_POST['mirna']);
+        
+       $trimmed = array();
+               $str = preg_split('/,/', $mirna);
+            $str = preg_split('/[,|\r\n|\r|\n]+/', $mirna);
+        //echo json_encode($str);
+            for ($i=0;$i<count($str);$i++) {
+                    $trimmed[$i] = trim($str[$i]);
+            }
+
+        $mirnaString = implode("','", $trimmed);
+        $mirnaString = str_replace('\r\n',"','" , $mirnaString);
+
+$gene = mysqli_real_escape_string($mirnabDb, $_POST['gene']);
+
+        $trimmed2 = array();
+               $str2 = preg_split('/,/', $gene);
+            $str2 = preg_split('/[,|\r\n|\r|\n]+/', $gene);
+        //echo json_encode($str);
+            for ($h=0;$h<count($str2);$h++) {
+                    $trimmed2[$h] = trim($str2[$h]);
+            }
+
+        $geneString = implode("','", $trimmed2);
+        $geneString = str_replace('\r\n',"','" , $geneString);
+        
+        $query = 
+          "SELECT 
+            distinct 
+                mirna_name as source, 
+                up_tf as target, 
+                gene_name as type, 
+                gene_pubId
+            from main_v2, upstream_tf,gene_v2
+            where main_v2.link_id = upstream_tf.link_id
+            and main_v2.link_id = gene_v2.link_id
+            and mirna_name in ('".$mirnaString."')
+            and gene_name in ('".$geneString."')
+            limit 30";         
+
+$result = mysqli_query($mirnabDb,$query);
+
+//echo $result;
+
+ if ( ! $result ) {
+        echo mysql_error();
+        die;
+    }
+
+$data = array();
+
+  for ($x = 0; $x < mysqli_num_rows($result); $x++) {
+        $data[] = mysqli_fetch_assoc($result);
+    }
+
+$jsonForm = json_encode($data);
+
+}
+
+else if ( ! empty($_POST['mirna']) and empty($_POST['gene']) and !empty($_POST['tf'])){
+   
+
+require_once("dBaseAccess.php");
+
+$mirna = mysqli_real_escape_string($mirnabDb, $_POST['mirna']);
+        
+       $trimmed = array();
+               $str = preg_split('/,/', $mirna);
+            $str = preg_split('/[,|\r\n|\r|\n]+/', $mirna);
+        //echo json_encode($str);
+            for ($i=0;$i<count($str);$i++) {
+                    $trimmed[$i] = trim($str[$i]);
+            }
+
+        $mirnaString = implode("','", $trimmed);
+        $mirnaString = str_replace('\r\n',"','" , $mirnaString);
+
+$tf = mysqli_real_escape_string($mirnabDb, $_POST['tf']);
+
+        $trimmed3 = array();
+               $str3 = preg_split('/,/', $tf);
+            $str3 = preg_split('/[,|\r\n|\r|\n]+/', $tf);
+        //echo json_encode($str);
+            for ($j=0;$j<count($str3);$j++) {
+                    $trimmed3[$j] = trim($str3[$j]);
+            }
+
+        $tfString = implode("','", $trimmed3);
+        $tfString = str_replace('\r\n',"','" , $tfString);
+        
+        $query = 
+          "SELECT 
+            distinct 
+                mirna_name as source, 
+                up_tf as target, 
+                gene_name as type, 
+                gene_pubId
+            from main_v2, upstream_tf,gene_v2
+            where main_v2.link_id = upstream_tf.link_id
+            and main_v2.link_id = gene_v2.link_id
+            and mirna_name in ('".$mirnaString."')
+            and up_tf in ('".$tfString."')
+            limit 30";         
+
+$result = mysqli_query($mirnabDb,$query);
+
+//echo $result;
+
+ if ( ! $result ) {
+        echo mysql_error();
+        die;
+    }
+
+$data = array();
+
+  for ($x = 0; $x < mysqli_num_rows($result); $x++) {
+        $data[] = mysqli_fetch_assoc($result);
+    }
+
+$jsonForm = json_encode($data);
+
+}
+
+else if (  empty($_POST['mirna']) and ! empty($_POST['gene']) and ! empty($_POST['tf'])){
+   
+
+require_once("dBaseAccess.php");
+
+$gene = mysqli_real_escape_string($mirnabDb, $_POST['gene']);
+
+        $trimmed2 = array();
+               $str2 = preg_split('/,/', $gene);
+            $str2 = preg_split('/[,|\r\n|\r|\n]+/', $gene);
+        //echo json_encode($str);
+            for ($h=0;$h<count($str2);$h++) {
+                    $trimmed2[$h] = trim($str2[$h]);
+            }
+
+        $geneString = implode("','", $trimmed2);
+        $geneString = str_replace('\r\n',"','" , $geneString);
+
+$tf = mysqli_real_escape_string($mirnabDb, $_POST['tf']);
+
+        $trimmed3 = array();
+               $str3 = preg_split('/,/', $tf);
+            $str3 = preg_split('/[,|\r\n|\r|\n]+/', $tf);
+        //echo json_encode($str);
+            for ($j=0;$j<count($str3);$j++) {
+                    $trimmed3[$j] = trim($str3[$j]);
+            }
+
+        $tfString = implode("','", $trimmed3);
+        $tfString = str_replace('\r\n',"','" , $tfString);
+        
+        $query = 
+          "SELECT 
+            distinct 
+                mirna_name as source, 
+                up_tf as target, 
+                gene_name as type, 
+                gene_pubId
+            from main_v2, upstream_tf,gene_v2
+            where main_v2.link_id = upstream_tf.link_id
+            and main_v2.link_id = gene_v2.link_id
+            and up_tf in ('".$tfString."')
+            and gene_name in ('".$geneString."')
+            limit 30";         
+
+$result = mysqli_query($mirnabDb,$query);
+
+//echo $result;
+
+ if ( ! $result ) {
+        echo mysql_error();
+        die;
+    }
+
+$data = array();
+
+  for ($x = 0; $x < mysqli_num_rows($result); $x++) {
+        $data[] = mysqli_fetch_assoc($result);
+    }
+
+$jsonForm = json_encode($data);
+
+}
+
+else if ( ! empty($_POST['mirna']) and empty($_POST['gene']) and empty($_POST['tf'])){
+   
+
+require_once("dBaseAccess.php");
+
+$mirna = mysqli_real_escape_string($mirnabDb, $_POST['mirna']);
+        
+       $trimmed = array();
+               $str = preg_split('/,/', $mirna);
+            $str = preg_split('/[,|\r\n|\r|\n]+/', $mirna);
+        //echo json_encode($str);
+            for ($i=0;$i<count($str);$i++) {
+                    $trimmed[$i] = trim($str[$i]);
+            }
+
+        $mirnaString = implode("','", $trimmed);
+        $mirnaString = str_replace('\r\n',"','" , $mirnaString);
+        
+        $query = 
+          "SELECT 
+            distinct 
+                mirna_name as source, 
+                up_tf as target, 
+                gene_name as type, 
+                gene_pubId
+            from main_v2, upstream_tf,gene_v2
+            where main_v2.link_id = upstream_tf.link_id
+            and main_v2.link_id = gene_v2.link_id
+            and mirna_name in ('".$mirnaString."')
+            limit 50";         
+
+$result = mysqli_query($mirnabDb,$query);
+
+//echo $result;
+
+ if ( ! $result ) {
+        echo mysql_error();
+        die;
+    }
+
+$data = array();
+
+  for ($x = 0; $x < mysqli_num_rows($result); $x++) {
+        $data[] = mysqli_fetch_assoc($result);
+    }
+
+$jsonForm = json_encode($data);
+
+}
+
+else if (  empty($_POST['mirna']) and ! empty($_POST['gene']) and empty($_POST['tf'])){
+   
+
+require_once("dBaseAccess.php");
+
+$gene = mysqli_real_escape_string($mirnabDb, $_POST['gene']);
+
+        $trimmed2 = array();
+               $str2 = preg_split('/,/', $gene);
+            $str2 = preg_split('/[,|\r\n|\r|\n]+/', $gene);
+        //echo json_encode($str);
+            for ($h=0;$h<count($str2);$h++) {
+                    $trimmed2[$h] = trim($str2[$h]);
+            }
+
+        $geneString = implode("','", $trimmed2);
+        $geneString = str_replace('\r\n',"','" , $geneString);
+
+        
+        $query = 
+          "SELECT 
+            distinct 
+                mirna_name as source, 
+                up_tf as target, 
+                gene_name as type, 
+                gene_pubId
+            from main_v2, upstream_tf,gene_v2
+            where main_v2.link_id = upstream_tf.link_id
+            and main_v2.link_id = gene_v2.link_id
+            and gene_name in ('".$geneString."')
+            limit 50";         
+
+$result = mysqli_query($mirnabDb,$query);
+
+//echo $result;
+
+ if ( ! $result ) {
+        echo mysql_error();
+        die;
+    }
+
+$data = array();
+
+  for ($x = 0; $x < mysqli_num_rows($result); $x++) {
+        $data[] = mysqli_fetch_assoc($result);
+    }
+
+$jsonForm = json_encode($data);
+
+}
+
+else if (  empty($_POST['mirna']) and empty($_POST['gene']) and !empty($_POST['tf'])){
+   
+
+require_once("dBaseAccess.php");
+
+        $tf = mysqli_real_escape_string($mirnabDb, $_POST['tf']);
+
+        $trimmed3 = array();
+               $str3 = preg_split('/,/', $tf);
+            $str3 = preg_split('/[,|\r\n|\r|\n]+/', $tf);
+        //echo json_encode($str);
+            for ($j=0;$j<count($str3);$j++) {
+                    $trimmed3[$j] = trim($str3[$j]);
+            }
+
+        $tfString = implode("','", $trimmed3);
+        $tfString = str_replace('\r\n',"','" , $tfString);
+        
+        $query = 
+          "SELECT 
+            distinct 
+                mirna_name as source, 
+                up_tf as target, 
+                gene_name as type, 
+                gene_pubId
+            from main_v2, upstream_tf,gene_v2
+            where main_v2.link_id = upstream_tf.link_id
+            and main_v2.link_id = gene_v2.link_id
+            and up_tf in ('".$tfString."')
+            limit 50";
+
+echo $query;         
+
+$result = mysqli_query($mirnabDb,$query);
+
+//echo $result;
+
+ if ( ! $result ) {
+        echo mysql_error();
+        die;
+    }
+
+$data = array();
+
+  for ($x = 0; $x < mysqli_num_rows($result); $x++) {
+        $data[] = mysqli_fetch_assoc($result);
+    }
+
+$jsonForm = json_encode($data);
+
+}
+  
+else if (  empty($_POST['mirna']) and  empty($_POST['gene']) and empty($_POST['tf'])){
+   
+
+require_once("dBaseAccess.php");
+        
+        $query = 
+          "SELECT 
+            distinct 
+                mirna_name as source, 
+                up_tf as target, 
+                gene_name as type, 
+                gene_pubId
+            from main_v2, upstream_tf,gene_v2
+            where main_v2.link_id = upstream_tf.link_id
+            and main_v2.link_id = gene_v2.link_id
+            limit 50";         
+
+$result = mysqli_query($mirnabDb,$query);
+
+//echo $result;
+
+ if ( ! $result ) {
+        echo mysql_error();
+        die;
+    }
+
+$data = array();
+
+  for ($x = 0; $x < mysqli_num_rows($result); $x++) {
+        $data[] = mysqli_fetch_assoc($result);
+    }
+
+$jsonForm = json_encode($data);
 
 }
 
 ?>
 
 <script>
-   function drawTable1(jsonData) {
+   function drawTable(jsonData) {
     
     var dataT = new google.visualization.DataTable();
     var numRows = jsonData.length;
@@ -148,6 +557,7 @@ $jsonForm = json_encode($data);
     console.log(numRows, " rows added");
 
     dataT.addColumn('string', 'miRNA');
+    dataT.addColumn('string', 'TF');
     dataT.addColumn('string', 'Gene');
     dataT.addColumn('string', 'PubId');
 
@@ -158,6 +568,7 @@ $jsonForm = json_encode($data);
         dataT.setCell(iter, 0, jsonData[iter]['source']);
         dataT.setCell(iter, 1, jsonData[iter]['target']);
         dataT.setCell(iter, 2, jsonData[iter]['type']);
+        dataT.setCell(iter, 3, jsonData[iter]['gene_pubId']);
     };
 
     var options = {allowHtml: true, alternatingRowStyle: true}; 
@@ -170,140 +581,17 @@ $jsonForm = json_encode($data);
 </script>
 
 
-                  <script src="newGraph.js"></script>
+<script src="newGraph.js"></script>
+
 <script>
 var jsonForm = <?php echo $jsonForm; ?>;
 
-drawTable1(jsonForm);
+drawTable(jsonForm);
 
 createGraph(jsonForm,"#graph");
 
 
 </script>  
-
-         
- 
-        </div>
-
-<div class="tabContent" id="tab2">
-            <h2>Please enter one or more up_tf</h2>
-            <div>
-                <form ="" method='post'>
-                
-            <tr><td><textarea name="user2" value="" rows = "15" cols="80"></textarea></td></tr>
-                
-                
-                <input type="submit" name="submit" value="Submit"></form>
-                              
-                
-            </div>
-
-           <div class="row">
-      <div class="col-sm-3"></div>
-      <div class="col-sm-6"> </div>
-      <!--  style="display: none" -->
-      <div class="col-sm-3"></div>
-    </div>
-    <div id="table"></div>
-    <span id="pageCnt"></span>
-    <div class="col-lg-8 col-md-6 col-sm-6" id="graph">
-                        </div>  
-
-
-<?php
-if ( ! empty($_POST['user2'])){
-    $name = $_POST['user2'];
-
-require_once("dBaseAccess.php");
-
-$mirna = mysqli_real_escape_string($mirnabDb, $_POST['user2']);
-
-$trimmed = array();
-              $str = preg_split('/,/', $mirna);
-            $str = preg_split('/[,|\r\n|\r|\n]+/', $mirna);
-        //echo json_encode($str);
-            for ($i=0;$i<count($str);$i++) {
-                    $trimmed[$i] = trim($str[$i]);
-            }
-
-        $strNew = implode("','", $trimmed);
-        $strNew = str_replace('\r\n',"','" , $strNew);
-
-        echo $strNew;
-        
-        $query = 
-           "SELECT distinct mirna_name as target
-           ,up_tf as source
-            , up_regul as type
-            , up_pubId 
-            from main_v2, upstream_tf
-                where main_v2.link_id = upstream_tf.link_id
-                AND up_tf in ('".$strNew."')
-                LIMIT 30
-                ";
-
-$result = mysqli_query($mirnabDb,$query);
-
-//echo $result;
-
- if ( ! $result ) {
-        echo mysql_error();
-        die;
-    }
-
-$data = array();
-
-  for ($x = 0; $x < mysqli_num_rows($result); $x++) {
-        $data[] = mysqli_fetch_assoc($result);
-    }
-$jsonForm2 = json_encode($data);
-
-}
-
-
-
-?>
-
-<script>
-   function drawTable2(jsonData) {
-    
-    var dataT = new google.visualization.DataTable();
-    var numRows = jsonData.length;
-    dataT.addRows(numRows);
-    console.log(numRows, " rows added");
-
-    dataT.addColumn('string', 'miRNA');
-    dataT.addColumn('string', 'Tf');
-    dataT.addColumn('string', 'Regulation');
-    dataT.addColumn('string', 'PubId');
-
-    var url = '',
-        pubmed = '';
-
-    for (var iter = 0; iter < numRows; iter++) {
-        dataT.setCell(iter, 0, jsonData[iter]['source']);
-        dataT.setCell(iter, 1, jsonData[iter]['target']);
-        dataT.setCell(iter, 2, jsonData[iter]['type']);
-        dataT.setCell(iter, 2, jsonData[iter]['PubId']);
-    };
-
-    var options = {allowHtml: true, alternatingRowStyle: true}; 
-    //options['cssClassNames'] = cssNamesOne;
-    options['page'] = 'enable'; options['pageSize'] = 10; options['pagingSymbols'] = {prev: 'prev', next: 'next'}; //options['pagingButtonsConfiguration'] = 'auto';
-    
-    var table = new google.visualization.Table(document.getElementById('table'));
-    table.draw(dataT, options); // , {showRowNumber: true, width: '100%', height: '100%'});
-  }
-</script>
-
-<script>
-var jsonForm2 = <?php echo $jsonForm2; ?>;
-drawTable2(jsonForm2);
-createGraph(jsonForm2,"#graph");
-</script>
- 
-        </div>
-
 
     </div><!--/.container-fluid -->
      
@@ -316,8 +604,5 @@ createGraph(jsonForm2,"#graph");
     <script src="bootstrap-3.3.5-dist/js/bootstrap.min.js"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
    
-    
 
-   
-</bodyonload="init()">
 </html>
