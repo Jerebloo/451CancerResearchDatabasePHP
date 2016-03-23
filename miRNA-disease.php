@@ -11,23 +11,42 @@
     <!-- Bootstrap core CSS -->
     <link href="bootstrap-3.3.5-dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="tabsStyle.css" rel="stylesheet">
-   <link rel="stylesheet" href="newG.css">
-     <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    <link rel="stylesheet" href="newG.css">
+    <link href="css/mystyles.css" rel="stylesheet">
+    <link href="css/font-awesome.min.css" rel="stylesheet">
+    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
     <script src="tabScript.js"></script>
     <script src="table.js"></script>
     <link rel="stylesheet" href="table.css">
-     <link rel="stylesheet" href="googleTableCss.css">
+    <link rel="stylesheet" href="googleTableCss.css">
     <script src= "http://www.google.com/uds/modules/gviz/gviz-api.js"> </script>
     <script src= "https://www.google.com/jsapi"> </script>
     <script type="text/javascript">
         google.load('visualization', '1', {packages: ['table']});
     </script>
+    <script>
+        function checkvalue(){
+            var min = document.getElementById("min").value;
+            var max = document.getElementById("max").value;;
+            
+            if(min<0 || min>1) alert("Min must be between 0 and 1");
+            if(max>1 || max<0) alert("Max must be between 0 and 1");
+            if(min>max) alert("Min value cannot be greater than Max value");
+        }
+    </script>
+    <script type="text/javascript">
+        function showValue(newValue)
+        {
+            document.getElementById("range").innerHTML=newValue;
+            
+        }
+    </script>
 </head>
 <body onload="init()">
     <div class="container">
         <!-- Static navbar -->
-        <nav class="navbar navbar-default">
-            <div class="container-fluid">
+        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            <div class="container">
                 <div class="navbar-header">
                     <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
                         <span class="sr-only">Toggle navigation</span>
@@ -35,27 +54,67 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="#">Cancer Research Database</a>
+                    <a class="navbar-brand" href="Home.html">LOGO</a>
                 </div>
                 <div id="navbar" class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
-                        <li><a href="Home.html">Home</a></li>
-                        <li><a href="Search.php">Search</a></li>
-                        <li><a href="Analysis.php">Analysis</a></li>
-                         <li class="active"><a href="miRNA-disease.php">miRNA-disease</a></li>
-                         <li><a href="miRNA-TF-Gene.php">miRNA-TF-Gene</a></li>
+                        <li><a href="Home.html"><span class="glyphicon glyphicon-home"
+                            aria-hidden="true"></span> Home</a></li>
+                        <li><a href="Search.php"><span class="glyphicon glyphicon-search"
+                            aria-hidden="true"></span> Search</a></li>
+                        <li><a href="Analysis.php"><span class="glyphicon glyphicon-cog"
+                            aria-hidden="true"></span> Analysis</a></li>
+                        <li class="active"><a href="miRNA-disease.php">miRNA-disease</a></li>
+                        <li><a href="miRNA-TF-Gene.php">miRNA-TF-Gene</a></li>
                         <li><a>miRNA-Drug</a></li>
                         <li><a>miRNA methylation</a></li>
                     </ul>
                 </div><!--/.nav-collapse -->
+            </div><!--/.container-fluid -->
         </nav>
         <!-- Main component for a primary marketing message or call to action -->
         <div class="home">
-         
             <p>This page will alow you to search the database.</p>
         </div>
+        
+        <ul class="nav nav-tabs">
+            <li role="presentation" class="active">
+                <a href="#about" aria-controls="about"
+                     role="tab" data-toggle="tab">Search miRNA - Disease</a>
+            </li>
+            <li role="presentation">
+                <a href="#tab2" aria-controls="tab2"
+                     role="tab" data-toggle="tab">Search Disease - miRNA</a>
+            </li>
+        </ul>
+        
+        <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade in active" id="about">
+                <form id="" method='post'>
+                    <textarea name="user" value="" rows = "1" cols="70 "></textarea><br>
+                    <p style="padding: 10px"></p>
+                    <label>
+                        min: <input type="number" id="min" style="width: 40px; height: 40px">
+                    </label>
+                    <label>
+                        max: <input type="number" id="max" style="width: 40px; height: 40px">
+                    </label><br><br>
+                    <div style="width: 100; height: 50">
+                        <input type="range" min="0" max="1" step=".1" value="0" id="slider" onchange="showValue(this.value)">
+                        <span id="range">0</span>
+                    </div>
+                    <input type="submit" name="submit" value="Submit" onClick="checkvalue()">
+                </form>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="tab2">
+                <form method='post'>
+                    <textarea name="user2" value="" rows = "15" cols="80" placeholder="Please enter one or more dis_name"></textarea>
+                    <input type="submit" name="submit" value="Submit">
+                </form>
+            </div>
+        </div>
     
-        <ul id="tabs">
+        <!--<ul id="tabs">
             <li><a href="#about">Search miRNA - Disease</a></li>
             <li><a href="#tab2">Search Disease - miRNA</a></li>
         </ul>
@@ -65,12 +124,27 @@
             <div>
                 <form ="" method='post'>
                 
-               <tr><td><textarea name="user" value="" rows = "3" cols="80"></textarea></td></tr>
-                
-                <input type="submit" name="submit" value="Submit"></form>
+                    <textarea name="user" value="" rows = "1" cols="70 "></textarea><br>
+                    <p style="padding: 10px"></p>
+                    <label>
+                        min: <input type="number" id="min" style="width: 40px; height: 40px">
+                    </label>
+                    <label>
+                        max: <input type="number" id="max" style="width: 40px; height: 40px">
+                    </label><br><br>
+                    <div class="col-sm-2">
+                        <input type="range" min="0" max="1" step=".1" value="0" id="slider" onchange="showValue(this.value)">
+                        <span id="range">0</span>
+                    </div>
+                    <br><br>
+                    <div class="col-sm-2" >
+                        <input type="submit" name="submit" value="Submit" onClick="checkvalue()">
+                    </div>                
+                    
+                </form>
                               
                 
-            </div>
+            </div>-->
 
            <div class="row">
       <div class="col-sm-3"></div>
@@ -80,8 +154,10 @@
     </div>
     <div id="table"></div>
     <span id="pageCnt"></span>
-    <div  id="graph">
+    <div id="graph" style="width: 1000px">
                         </div>
+                        
+                        <!--class="col-lg-8 col-md-6 col-sm-6"--> 
 
 
 <?php
@@ -167,7 +243,7 @@ createGraph(jsonForm,"#graph");
  
         </div>
 
-<div class="tabContent" id="tab2">
+<!--<div class="tabContent" id="tab2">
             <h2>Please enter one or more dis_name</h2>
             <div>
                 <form ="" method='post'>
@@ -177,7 +253,7 @@ createGraph(jsonForm,"#graph");
                 
                 <input type="submit" name="submit" value="Submit"></form>
                     
-            </div>
+    </div>-->
 
             <div class="row">
       <div class="col-sm-3"></div>
@@ -240,14 +316,14 @@ createGraph(jsonForm2,"#graph");
 
 
 <div>
-        <input type="range" min="0" max="1" value="0" step=".1" onchange="showValue(this.value)" />
+        <!--<input type="range" min="0" max="1" value="0" step=".1" onchange="showValue(this.value)" />
 <span id="range">0</span>
 <script type="text/javascript">
 function showValue(newValue)
 {
     document.getElementById("range").innerHTML=newValue;
 }
-</script>
+</script>-->
 </div>
 
     </div><!--/.container-fluid -->

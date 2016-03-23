@@ -1,28 +1,32 @@
 path.link {
   fill: none;
   stroke: rgb(175,175,175);
-  stroke-width: 3px;
+  stroke-width: 2px;
 }
 
 marker#down-regulated ,marker#Down-regulated, marker#downregulated, marker#Downregulated
 {
 
-  fill: rgb(230,100,140);
+  /*fill: rgb(230,100,140);*/
+  fill: rgb(255,0,0);
 }
 
 marker#up-regulated ,marker#Up-regulated, marker#upregulated, marker#Upregulated
 {
-   fill: rgb(70,200,170);
+   /*fill: rgb(70,200,170);*/
+   fill: rgb(2,58,2);
 }
 
 path.link.down-regulated , path.link.Down-regulated, path.link.downregulated, path.link.Downregulated,path.link.Repression {
  
-  stroke: rgb(250,150,140);
+  /*stroke: rgb(250,150,140);*/
+  stroke: rgb(255,0,0);
 }
 
 path.link.up-regulated , path.link.Up-regulated, path.link.upregulated, path.link.Upregulated, path.link.Activation, path.link.induction, path.link.Activates {
  
-  stroke: rgb(100,240,200);
+  /*stroke: rgb(100,240,200);*/
+  stroke: rgb(2,58,2);
 
 }
 

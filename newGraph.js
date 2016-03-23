@@ -32,22 +32,61 @@ for(var i=0;i<jsonData.length;i++) {
       link.source = nodes[link.source] || (nodes[link.source]={name:link.source});
       link.target = nodes[link.target] || (nodes[link.target]={name:link.target});
       //console.log(nodes[link.source], typeof nodes[link.target]);
-      //console.log(nodes);
+      
     });
+    console.log("NODES "+nodes);
 
     //console.log(Object.keys(nodes));
+    var count=0;
     for(var k in nodes) {
-      if(nodes[k].name.indexOf("hsa") > -1) {
+      if(nodes[k].name.indexOf("mir") > -1 || nodes[k].name.indexOf("miR") > -1 || nodes[k].name.indexOf("MIR") > -1) {
         nodes[k]["group"] = 0;
       }
       else {
         nodes[k]["group"] = 1;
       }
+      count++;
+      console.log("nodes[k] #"+count+" "+nodes[k].name);
+      console.log("nodes[k][group] #"+count+" "+nodes[k]["group"]);
     }
     var arrows=[];
 
     for(var i=0;i<jsonData.length;i++){arrows[i]=jsonData[i].type;};
-
+    console.log("arrows " + arrows);
+    console.log("arrowsLength " + arrows.length);
+    console.log("typeofarrows " + typeof arrows[0]);
+    console.log("jsonData " + typeof jsonData[0].type);
+    /************************************************ */
+    var up_regulated=[];
+    var down_regulated=[];
+    var unspecified=[];
+    for(var i=0; i<arrows.length; i++){
+      if(arrows[i]=="Up-regulated")
+        up_regulated[i]=arrows[i];
+        
+      
+      else if(arrows[i]=="Down-regulated")
+        down_regulated[i]=arrows[i];
+        
+      
+      else
+        unspecified[i]=arrows[i];
+      
+      
+    }
+      
+    
+    console.log("UreguledArray " + up_regulated);
+    console.log("UreguledArrayTYpe " + typeof up_regulated);
+    console.log("DreguledArray " + down_regulated);
+    console.log("DreguledArrayTYpe " + typeof down_regulated);
+    console.log("UnsArray " + unspecified);
+    console.log("UnsArrayTYpe " + typeof unspecified);
+         
+    console.log("lengthUregulated " + up_regulated.length);
+    console.log("lengthDregulated " + down_regulated.length);  
+    console.log("lengthUns " + unspecified.length);
+    /************************************************ */
     //var w=1000,h=800;
     var w=500,h=800;
     var w = document.getElementById("graph").offsetWidth;
@@ -67,18 +106,37 @@ for(var i=0;i<jsonData.length;i++) {
     .append("svg:svg")
     .attr("width",w)
     .attr("height",h);
-
+    
+    
     svg.append("svg:defs").selectAll("marker")
-    .data(arrows)
+    .data(down_regulated)
     .enter().append("svg:marker")
-    .attr("id",String).attr("viewBox","0 -5 7 10")
+    .attr("id",String).attr("viewBox","0 -5 10 10")
     .attr("refX",15)
     .attr("refY",-1.5)
-    .attr("markerWidth",2)
-    .attr("markerHeight",6)
+    .attr("markerWidth",6)
+    .attr("markerHeight",12)
     .attr("orient","auto")
     .append("svg:path")
-    .attr("d","M-100,-100L100,0L0,200");
+    .attr("d","M-100,-50L100,0L0,200");        
+  
+    svg.append("svg:defs").selectAll("marker")
+    .data(up_regulated)      // Different link/path types can be defined here
+    .enter().append("svg:marker")    // This section adds in the arrows
+    .attr("id", String)
+    .attr("viewBox", "0 -5 10 10")
+    .attr("refX", 15)
+    .attr("refY", -1.5)
+    .attr("markerWidth", 6)
+    .attr("markerHeight", 6)
+    .attr("orient", "auto")
+    .append("svg:path")
+    .attr("d", "M0,-5L10,0L0,5");
+    
+    
+    
+    
+    
 
     var path=svg.append("svg:g").selectAll("path")
     .data(force.links())
