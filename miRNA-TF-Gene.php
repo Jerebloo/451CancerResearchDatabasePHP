@@ -82,8 +82,8 @@
     </div>
     <div id="table"></div>
     <span id="pageCnt"></span>
-    <div class="col-lg-8 col-md-6 col-sm-6" id="graph">
-                        </div>  
+    <div  id="graph">
+    </div>  
 
 <?php
 
@@ -581,7 +581,7 @@ $jsonForm = json_encode($data);
 </script>
 
 
-<script src="newGraph.js"></script>
+<script src="multiSourceTargetGraph.js"></script>
 
 <script>
 var jsonForm = <?php echo $jsonForm; ?>;
