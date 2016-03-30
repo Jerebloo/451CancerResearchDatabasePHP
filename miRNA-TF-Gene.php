@@ -13,7 +13,7 @@
     <!-- Bootstrap core CSS -->
     <link href="bootstrap-3.3.5-dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="tabsStyle.css" rel="stylesheet">
-   <link rel="stylesheet" href="newG.css">
+   <link rel="stylesheet" href="mSTG.css">
      <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
     <script src="tabScript.js"></script>
     <script src="table.js"></script>
