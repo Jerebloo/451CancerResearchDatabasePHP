@@ -4,6 +4,7 @@ $servername = "localhost";
 $username = "root";
 $password = "magician";
 $database = "mirnabkp";
+//store your personal database information
 
 // Create connection
 $mirnabDb = new mysqli($servername, $username, $password, $database);

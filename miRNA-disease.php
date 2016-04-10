@@ -38,10 +38,13 @@
         function showValue(newValue)
         {
             document.getElementById("range").innerHTML=newValue;
-            
         }
     </script>
+    
 </head>
+<!-- the head tag contains the needed script imports for this page, additionally a min and max box are set, the value in them is 
+obtained through the getElementById method -->
+
 <body onload="init()">
     <div class="container">
         <!-- Static navbar -->
@@ -54,7 +57,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="Home.html">LOGO</a>
+                    <a class="navbar-brand" href="Home.html">iMir</a>
                 </div>
                 <div id="navbar" class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
@@ -66,32 +69,39 @@
                             aria-hidden="true"></span> Analysis</a></li>
                         <li class="active"><a href="miRNA-disease.php">miRNA-disease</a></li>
                         <li><a href="miRNA-TF-Gene.php">miRNA-TF-Gene</a></li>
-                        <li><a>miRNA-Drug</a></li>
-                        <li><a>miRNA methylation</a></li>
+                        <li><a href="miRNA-Drug.php">miRNA-Drug</a></li>
+                        <li><a href="miRNA-Methylation.php">miRNA methylation</a></li>
                     </ul>
                 </div><!--/.nav-collapse -->
             </div><!--/.container-fluid -->
         </nav>
+        <!-- -->
         <!-- Main component for a primary marketing message or call to action -->
-        <div class="home">
-            <p>This page will alow you to search the database.</p>
+        <div class="page-header">
+            <h1>Search Database</h1><small>This page will alow you to search the database in two ways. First by entering
+                one or more miRNA Diseases in the first tab and getting a result and secondly by entering one or 
+                more Disease miRNAs in the second tab and getting an output.
+            </small>
         </div>
         
         <ul class="nav nav-tabs">
-            <li role="presentation" class="active">
-                <a href="#about" aria-controls="about"
+            <li role="presentation" class="active" id="tabheader1">
+                <a href="#tab1" aria-controls="tab1"
                      role="tab" data-toggle="tab">Search miRNA - Disease</a>
             </li>
-            <li role="presentation">
+            <li role="presentation" id="tabheader2">
                 <a href="#tab2" aria-controls="tab2"
                      role="tab" data-toggle="tab">Search Disease - miRNA</a>
             </li>
         </ul>
+
+        <!-- the ul tag allows us to have mutliple tabs within a particular page here we have 2 tabs denoted with the li tag
+        desciptions are also added in the a tag-->
         
         <div class="tab-content">
-            <div role="tabpanel" class="tab-pane fade in active" id="about">
-                <form id="" method='post'>
-                    <textarea name="user" value="" rows = "1" cols="70 "></textarea><br>
+            <div role="tabpanel" class="tab-pane fade in active" id="tab1">
+                <form id="inputform1" method='post'>
+                    <textarea name="user" value="" rows = "15" cols="70 "></textarea><br>
                     <p style="padding: 10px"></p>
                     <label>
                         min: <input type="number" id="min" style="width: 40px; height: 40px">
@@ -107,44 +117,15 @@
                 </form>
             </div>
             <div role="tabpanel" class="tab-pane fade" id="tab2">
-                <form method='post'>
-                    <textarea name="user2" value="" rows = "15" cols="80" placeholder="Please enter one or more dis_name"></textarea>
+                <form id="inputform2" method='post' name="form2">
+                    <textarea name="user2" value="" rows = "15" cols="80" placeholder="Please enter one or more dis_name"></textarea><br><br>
                     <input type="submit" name="submit" value="Submit">
                 </form>
             </div>
         </div>
-    
-        <!--<ul id="tabs">
-            <li><a href="#about">Search miRNA - Disease</a></li>
-            <li><a href="#tab2">Search Disease - miRNA</a></li>
-        </ul>
+        <p style="padding:20px;"></p>
+      <!-- create min and max text boxes , a slider is also included, this functionality is not a part of this page however  -->
 
-        <div class="tabContent" id="about">
-            <h2>Please enter one or more mirna_name</h2>
-            <div>
-                <form ="" method='post'>
-                
-                    <textarea name="user" value="" rows = "1" cols="70 "></textarea><br>
-                    <p style="padding: 10px"></p>
-                    <label>
-                        min: <input type="number" id="min" style="width: 40px; height: 40px">
-                    </label>
-                    <label>
-                        max: <input type="number" id="max" style="width: 40px; height: 40px">
-                    </label><br><br>
-                    <div class="col-sm-2">
-                        <input type="range" min="0" max="1" step=".1" value="0" id="slider" onchange="showValue(this.value)">
-                        <span id="range">0</span>
-                    </div>
-                    <br><br>
-                    <div class="col-sm-2" >
-                        <input type="submit" name="submit" value="Submit" onClick="checkvalue()">
-                    </div>                
-                    
-                </form>
-                              
-                
-            </div>-->
 
            <div class="row">
       <div class="col-sm-3"></div>
@@ -154,7 +135,54 @@
     </div>
     <div id="table"></div>
     <span id="pageCnt"></span>
-    <div id="graph" style="width: 1000px">
+    <div class="row">
+        <div class="col-md-10">
+        </div>
+
+        <!-- places the graph and table in the row div-->
+        
+        <!--GRAPH LEGEND-->
+        <div class="col-md-2">
+            <table border="0">
+                <tr>
+                    <td>
+                        <div style="background-color: green; height: 20px; width: 20px"></div>
+                    </td>
+                    <td>
+                        <label>Up-regulated</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div style="background-color: red; height: 20px; width: 20px"></div>
+                    </td>
+                    <td>
+                        <label>Down-regulated</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div style="background-color: blue; height: 20px; width: 20px"></div>
+                    </td>
+                    <td>
+                        <label>miRNA</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div style="background-color: orange; height: 20px; width: 20px"></div>
+                    </td>
+                    <td>
+                        <label>Diseases</label>
+                    </td>
+                </tr>
+            </table>
+
+            <!-- this is the graph legend it contains colors and attribute names in the label tags -->
+            
+        </div>
+    </div>
+     <div id="graph" >
                         </div>
                         
                         <!--class="col-lg-8 col-md-6 col-sm-6"--> 
@@ -176,6 +204,9 @@ $mirna = mysqli_real_escape_string($mirnabDb, $_POST['user']);
         $strNew = implode("','", $trimmed);
         $strNew = str_replace('\r\n',"','" , $strNew);
         echo $strNew;
+
+        // the users input is taken in and split by commas and newline, then reattached 
+        // with single qoutes and commas
         
         $query = 
            "SELECT mirna_name AS source
@@ -185,11 +216,44 @@ $mirna = mysqli_real_escape_string($mirnabDb, $_POST['user']);
                 from main_v2, disease 
                 where main_v2.link_id = disease.link_id
                 AND mirna_name in ('".$strNew."')
-                LIMIT 30
+                LIMIT 100
                 ";
+            /*search based on inputed mirna
+        returns table showing unique mirna/disease pairs, with the number of those pairs divided by the number of the most common mirna/disease pair
+        used for the graph */   
+        $graphQuery =
+            "SELECT c.mirna_name AS source
+           , c.dis_name AS target
+           , c.dis_reguln AS type
+           ,c.tally/(select max(t.tally) from 
+                    (SELECT count(*) as tally
+                    , mirna_name
+                    , dis_name
+                    , dis_reguln
+                        from main_v2, disease
+                        where main_v2.link_id = disease.link_id
+                        AND mirna_name in ('".$strNew."')
+                        group by mirna_name, dis_name) as t ) as numb
+                from (
+                    SELECT count(*) as tally
+                    , mirna_name
+                    , dis_name
+                    , dis_reguln
+                    from main_v2, disease
+                    where main_v2.link_id = disease.link_id
+                    AND mirna_name in ('".$strNew."')
+                    group by mirna_name, dis_name) as c
+                group by c.mirna_name, c.dis_name
+                order by numb desc
+                limit 100
+                ";
+                // this query counts by source target matching pairs giving a number that is the number of times a pair occurs
+
+                
 $result = mysqli_query($mirnabDb,$query);
+$resultGraph= mysqli_query($mirnabDb,$graphQuery);
 //echo $result;
- if ( ! $result ) {
+ if ( ! $result || ! $resultGraph) {
         echo mysql_error();
         die;
     }
@@ -197,10 +261,19 @@ $data = array();
   for ($x = 0; $x < mysqli_num_rows($result); $x++) {
         $data[] = mysqli_fetch_assoc($result);
     }
+$dataGraph = array();
+  for ($x = 0; $x < mysqli_num_rows($resultGraph); $x++) {
+        $dataGraph[] = mysqli_fetch_assoc($resultGraph);
+    }
 $jsonForm = json_encode($data);
-//echo $jsonForm;
+$jsonGraph=json_encode($dataGraph);
 }
+
+//2  results are taken in for the table and graph queries made above, they are looped through and 
+//split into an array, then they are cast into json type objects 
 ?>
+
+
                   <script src="newGraph.js"></script>
 
 <script>
@@ -233,13 +306,67 @@ $jsonForm = json_encode($data);
     var table = new google.visualization.Table(document.getElementById('table'));
     table.draw(dataT, options); // , {showRowNumber: true, width: '100%', height: '100%'});
   }
+//this script builds the table for this page, rows are added based on the length of the jsonData and columns are added with 
+// specific names , then the jsonData is iterated through and the cells of the table are created , options make it possible to have paging 
+//enabled , the buttons are labled prev and next , the table is attached to a div id = table  in the getElementById
+
 </script>
 
 <script>
-var jsonForm = <?php echo $jsonForm;?>;
-drawTable(jsonForm);
-createGraph(jsonForm,"#graph");
+    //Checks If first tab is active and sets its to active if it's not
+    var activeclass = "active";
+    var inactiveclass = "in active";
+    var tab=document.getElementById("tabheader1");
+    var tabpane=document.getElementById("tab1");
+      
+    //add class attribute to element  
+    function addclass(element, classname){
+        console.log("In add class");
+        var newclassname;
+        var tabpaneactiveclass = "tab-pane fade in active";
+        var tab2=document.getElementById("tabheader2");
+        var tabpane2=document.getElementById("tab2");
+        if(!element.className){
+            element.className=classname;
+            removeclass("active", tab2);
+            removeclass(tabpaneactiveclass, tabpane2);
+        }else if(element.className=="active" || element.className==tabpaneactiveclass){
+            return;
+        }else{
+            newclassname=element.className;
+            newclassname+=" ";
+            newclassname+=classname;
+            element.className=newclassname;
+        }
+    }
+    //remove class attribute from element
+    function removeclass(classname, element) {
+        console.log("In remove class");
+        var cn = element.className;
+        if(cn=="active"){
+            cn=" ";
+        }else{
+            cn=" ";
+            cn="tab-pane fade";
+        }
+        //var rxp = new RegExp( "s?b"+classname+"b", "g" );
+        //cn = cn.replace( rxp, ' ' );
+        element.className = cn;
+    }
+    addclass(tab, activeclass);
+    addclass(tabpane, inactiveclass);
+    
+    //Testing/Backtracking
+    console.log("class tab1: "+tab.className);
+    console.log("class tabpane1: "+tabpane.className);
+    
+    //Draws table and graph with data from php script
+    var jsonForm = <?php echo $jsonForm;?>;
+    var jsonGraph= <?php echo $jsonGraph;?>;
+    drawTable(jsonForm);
+    createGraph(jsonGraph,"#graph");
 </script>  
+
  
         </div>
 
@@ -263,8 +390,10 @@ createGraph(jsonForm,"#graph");
     </div>
     <div id="table"></div>
     <span id="pageCnt"></span>
-    <div class="col-lg-8 col-md-6 col-sm-6" id="graph">
+    <div id="graph">
                         </div>    
+
+<!-- set the div that holds the table and graph , set the paging element -->
 
 <?php
 if ( ! empty($_POST['user2'])){
@@ -281,6 +410,9 @@ $trimmed = array();
         $strNew = implode("','", $trimmed);
         $strNew = str_replace('\r\n',"','" , $strNew);
         echo $strNew;
+
+        //take the users input from the text box and strip out the spaces, newlines, and commas, 
+        //reformat it into a way the query can read (append ', between words)
         
         $query = 
            "SELECT mirna_name AS source
@@ -290,11 +422,45 @@ $trimmed = array();
                 from main_v2, disease 
                 where main_v2.link_id = disease.link_id
                 AND dis_name in ('".$strNew."')
-                LIMIT 30
+                LIMIT 100
                 ";
+        /*search based on inputed diseases
+        returns table showing unique mirna/disease pairs, with the number of those pairs divided by the number of the most common mirna/disease pair
+        used for the graph */
+        $graphQuery =
+            "SELECT c.mirna_name AS source
+           , c.dis_name AS target
+           , c.dis_reguln AS type
+           ,c.tally/(select max(t.tally) from 
+                    (SELECT count(*) as tally
+                    , mirna_name
+                    , dis_name
+                    , dis_reguln
+                        from main_v2, disease
+                        where main_v2.link_id = disease.link_id
+                        AND dis_name in ('".$strNew."')
+                        group by mirna_name, dis_name) as t ) as numb
+                from (
+                    SELECT count(*) as tally
+                    , mirna_name
+                    , dis_name
+                    , dis_reguln
+                    from main_v2, disease
+                    where main_v2.link_id = disease.link_id
+                    AND dis_name in ('".$strNew."')
+                    group by mirna_name, dis_name) as c
+                group by c.mirna_name, c.dis_name
+                order by numb desc
+                limit 100
+                ";
+
+                //a query that groups source and target matches and gives the total sum of those divided by
+                // the largest sum of the entire result set
+
 $result = mysqli_query($mirnabDb,$query);
+$resultGraph= mysqli_query($mirnabDb,$graphQuery);
 //echo $result;
- if ( ! $result ) {
+ if ( ! $result || ! $resultGraph) {
         echo mysql_error();
         die;
     }
@@ -302,29 +468,87 @@ $data = array();
   for ($x = 0; $x < mysqli_num_rows($result); $x++) {
         $data[] = mysqli_fetch_assoc($result);
     }
+$dataGraph = array();
+  for ($x = 0; $x < mysqli_num_rows($resultGraph); $x++) {
+        $dataGraph[] = mysqli_fetch_assoc($resultGraph);
+    }
 $jsonForm2 = json_encode($data);
-}
+$jsonGraph2=json_encode($dataGraph);
+    }
+
+// query results are taken into result and result graph, split into arrays and cast as json objects
+
 ?>
 
 <script>
-var jsonForm2 = <?php echo $jsonForm2; ?>;
-drawTable(jsonForm2);
-createGraph(jsonForm2,"#graph");
+    //Sets 2nd tab to active
+    var activeclass = "active";
+    var inactiveclass = "in active";
+    var tab2=document.getElementById("tabheader2");
+    var tabpane2=document.getElementById("tab2");   
+    console.log("class tab2: "+tab2.className);
+    console.log("class tabpane2: "+tabpane2.className);
+    console.log("class tab1: "+document.getElementById("tabheader1").className);
+    console.log("class tabpane1: "+document.getElementById("tab1").className);
+    
+    //sets elemnts class
+    function addclass(element, classname){
+        console.log("in addclass");
+        var newclassname;
+        var tabpaneactiveclass = "tab-pane fade in active";
+        var tab=document.getElementById("tabheader1");
+        var tabpane=document.getElementById("tab1");
+        if(!element.className){
+            element.className=classname;
+            removeclass("active", tab);
+            removeclass(tabpaneactiveclass, tabpane)
+            
+            //Testing/Bactracking
+            console.log("******After remove classes methods****");
+            console.log("class tab2: "+tab2.className);
+            console.log("class tabpane2: "+tabpane2.className);
+            console.log("class tab1: "+tab.className);
+            console.log("class tabpane1: "+tabpane.className);
+            console.log("******After remove classes methods****")
+        }else{
+            newclassname=element.className;
+            newclassname+=" ";
+            newclassname+=classname;
+            element.className=newclassname;
+        }
+    }
+    //removes active class from tab
+    function removeclass(classname, element) {
+        console.log("In remove class");
+        var cn = element.className;
+        if(cn=="active"){
+            cn=" ";
+        }else{
+            cn=" ";
+            cn="tab-pane fade";
+        }
+        //var rxp = new RegExp( "s?b"+classname+"b", "g" );
+        //cn = cn.replace( rxp, ' ' );
+        element.className = cn;
+    }
+  
+    addclass(tab2, activeclass);
+    addclass(tabpane2, inactiveclass);
+    
+    
+    //Draws table and graph with data from php script  
+    var jsonForm2 = <?php echo $jsonForm2; ?>;
+    var jsonGraph2 = <?php echo $jsonGraph2; ?>;
+    drawTable(jsonForm2);
+    createGraph(jsonGraph2,"#graph");
+      
+      // this script sets the active tab to the 2nd tab even after using the submit button, additionally a table and graph
+      // are built after converting php variables to javascript variables 
+
 </script>
  
         </div>
 
-
-<div>
-        <!--<input type="range" min="0" max="1" value="0" step=".1" onchange="showValue(this.value)" />
-<span id="range">0</span>
-<script type="text/javascript">
-function showValue(newValue)
-{
-    document.getElementById("range").innerHTML=newValue;
-}
-</script>-->
-</div>
 
     </div><!--/.container-fluid -->
 
@@ -337,9 +561,8 @@ function showValue(newValue)
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="bootstrap-3.3.5-dist/js/bootstrap.min.js"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-   
-    
 
+<!-- bootstrap javascript files loaded at the end of the page for efficiency  -->
    
 </bodyonload="init()">
 </html>

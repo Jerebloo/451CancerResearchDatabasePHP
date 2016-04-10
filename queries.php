@@ -19,4 +19,14 @@
     }
 	  	echo json_encode($data);
 	}
+
+
+// this code is accessed from the ajax request on the search page
+// this page has access to the data declared in the ajax on the search page (it can grab the data 'mirna' through post)
+// the query will return columns which are : chemicals, miRNAs, regulations(response), conditions, tech, the pubmed ID, the chemical id
+// the tables are linked on the chem_id from main_v2 and chemical
+//results are given for a specific chemical chosen from the dropdown menu
+// the json type object acheived at the end of the php is sent back to the search page
+
 ?>
+

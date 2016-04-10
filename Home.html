@@ -62,12 +62,15 @@
                          aria-hidden="true"></span> Analysis</a></li>
                     <li><a href="miRNA-disease.php">miRNA-disease</a></li>
                     <li><a href="miRNA-TF-Gene.php">miRNA-TF-Gene</a></li>
-                    <li><a>miRNA-Drug</a></li>
-                    <li><a>miRNA methylation</a></li>
+                    <li><a href="miRNA-Drug.php">miRNA-Drug</a></li>
+                    <li><a href="miRNA-Methylation.php">miRNA methylation</a></li>
                 </ul>
             </div><!--/.nav-collapse -->
         </div><!--/.container-fluid -->
     </nav>
+
+<!-- nav tag builds the bar at the top of the page with tabs that are named by the li tag declarations -->
+
     <header class="jumbotron">
         <div class="container">
             <div class="row">
@@ -89,7 +92,7 @@
                 <i>miRegulome</i> is an integrated online repository that provides entire regulatory modules of a miRNA, based on manually curated validated published data. Each module is hyperlinked to appropriate external database such as <a href="http://ctdbase.org/" target="_blank" class="embeddedAnchors">CTD</a>, <a href="http://www.mir2disease.org/" target="_blank" class="embeddedAnchors">mir2Disease</a>, <a href="http://lgmb.fmrp.usp.br/mirnapath/" target="_blank" class="embeddedAnchors">miRNApath</a>, <a href="http://www.genome.jp/kegg/" target="_blank" class="embeddedAnchors">KEGG</a>, <a href="http://www.ncbi.nlm.nih.gov/sites/gquery" target="_blank" class="embeddedAnchors">Entrez</a>, and <a href="http://www.ncbi.nlm.nih.gov/pubmed" target="_blank" class="embeddedAnchors">PubMed</a> etc. to give the best possible picture of a miRNA regulome. The modules of a miRNA regulome consist of upstream regulators (transcription factors and various chemicals), downstream targets, pathways, functions, and disease associations etc. The relationships between modules and miRNA and experimental details have also been provided. <br/> <br/>
     You can get the relationships among modules of a miRNA through searching the database by clicking the features under Database Statistics or using <a href="dbLookup.php" class="embeddedAnchors">Search by Chemical</a>. You can also search for a specific combination of modules (such as miRNA, species, function, disease etc.) using <a href="advsearch.html" class="embeddedAnchors">Advanced Search</a>. <br/> <br/>
     Novel reverse transcriptomics based <b>analysis tools</b> are also plugged in under <a href="analysis.html" class="embeddedAnchors">Analysis</a> feature for various types of user specific data analysis using the data available in miRegulome to get meaningful associations between Chemical-Disease, miR-Disease, Gene-Disease, and Disease-Chemical/miR. 
-            </p> <!--end of contentMatter-->
+            </p> <!--end of contentMatter the above gives information about the website, the below paragraph tag does the same-->
             <p>
                 <i>miRegulome</i> does not perform any enrichment analysis based on expression values. These tools mine the database and give relevant associations to the user by counting the associations (direct or indirect) between entries and rank them as per their count of associations (PubMed IDs). Additionally, the Z-scores work on these association counts to provide a fine grained ranking of the entities.
             </p>
@@ -99,6 +102,8 @@
                 <h3>How to cite</h3>
                 <a class="embeddedAnchors" href="http://www.nature.com/articles/srep12832" target="_blank">Barh, Debmalya, Bhanu Kamapantula, Neha Jain, Joseph Nalluri, Antaripa Bhattacharya, Lucky Juneja, Neha Barve et al. "miRegulome: a knowledge-base of miRNA regulomics and analysis." Scientific reports 5 (2015).</a>
             </p>
+<!-- people working on this project-->
+
         </div>
         <div class="row">
             <h3>Data Statistics</h3>
@@ -126,12 +131,15 @@
 		              <i class="fa fa-phone"></i>: (804) 828-0100<br>
                       <i class="fa fa-fax"></i>: +852 8765 4321<br>
                       <i class="fa fa-envelope"></i>: 
-                      <a href="mailto:confusion@food.net">ottolab@vcu.edu</a>
+                      <a href="mailto:ottolab@food.vcu">ottolab@vcu.edu</a>
 		            </address>
                 </div>
+
+                <!-- prints this adress information on the home page within the div class dimension xs-6,sm-5 -->
+
                 <div class="col-xs-12">
                     <p style="padding:10px;"></p>
-                    <p align=center>© Copyright 2015 Ristorante Con Fusion</p>
+                    <p align=center>© Copyright 2016 Cancer Database</p>
                 </div>
             </div>
         </div>

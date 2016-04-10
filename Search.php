@@ -12,12 +12,17 @@
     $dropnames = json_encode($reparray);
     //close the db connection
    // mysqli_close($connection);
-    
+ 
+ //this query grabs the chemical names from the database, this data  dropnames  is used to build the dropdown later on   
 ?>
 
 <script>
     var pech = <?php echo $dropnames; ?>;
+
+    //grabs the php variable holding the chemicals and stores it in javascript variable pech
 </script>
+
+
 <html lang="en">
 <head>
 
@@ -43,6 +48,8 @@
     </script>
    
 </head>
+
+<!-- the head tag contains the needed script imports for this page-->
 <body>
     <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
         <div class="container">
@@ -65,16 +72,21 @@
                          aria-hidden="true"></span> Analysis</a></li>
                     <li><a href="miRNA-disease.php">miRNA-disease</a></li>
                     <li><a href="miRNA-TF-Gene.php">miRNA-TF-Gene</a></li>
-                    <li><a>miRNA-Drug</a></li>
-                    <li><a>miRNA methylation</a></li>
+                    <li><a href="miRNA-Drug.php">miRNA-Drug</a></li>
+                    <li><a href="miRNA-Methylation.php">miRNA methylation</a></li>
                 </ul>
             </div><!--/.nav-collapse -->
         </div><!--/.container-fluid -->
     </nav>
-        <!-- Main component for a primary marketing message or call to action -->
+     <!-- the nav tag contains the bar of tabs at the top of the page and within each tab is a li tag defined name of the tab -->
     <div class="container">
-        <p>This page will allow you to search the database.</p>
-        <select id="selector"> </select>
+        <div class="page-header">
+            <h1>Search Database</h1><small>This page will alow you to search a specific element by selecting 
+                the element from the options in the dropdown menu</small>
+        </div>        
+        <div>
+            <select id="selector"> </select>
+        </div>
     
         <div class="row">
             <div class="col-sm-3"></div>
@@ -91,15 +103,15 @@
         </div>
     </div>
     
-    
+    <!-- the row div holds the table below that the graph is attached-->
         
     <!-- /container -->
-    <!-- Bootstrap core JavaScript
+    <!-- 
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
 
     <script>
-        //console.log(pech[0]);
+       
         window.onload = function () 
         {
             var JSON = pech, 
@@ -121,12 +133,17 @@
                 select.appendChild(option);
             };
         };
+
+        //this script builds a selector that will attach to the selector div
+        //it appends a new chemical that can be selected for each chemical in pech
+
     </script>
+
 
  <script src="http://code.jquery.com/jquery-1.11.3.js"></script>
  <script src="https://rawgit.com/gka/d3-jetpack/master/d3-jetpack.js"></script>
 
-
+<!-- jetpack may not be needed-->
  
   <script>
     function drawTable(jsonData) {
@@ -164,32 +181,39 @@
         var table = new google.visualization.Table(document.getElementById('tableGoogle'));
         table.draw(dataT, options); // , {showRowNumber: true, width: '100%', height: '100%'});
     }
+    //this script builds the table for this page, rows are added based on the length of the jsonData and columns are added with 
+// specific names , then the jsonData is iterated through and the cells of the table are created , options make it possible to have paging 
+//enabled , the buttons are labled prev and next , the table is attached to a div id = table  in the getElementById
+
+
     
         $("#selector").change(function() {
-            // gets the miRNA selected using dropdown
-            var mirnaSelected = $(this).val();
+            // gets the chemical selected using dropdown
+            var mirnaSelected = $(this).val(); //stores the chemical in the var
             var phpJson = [];
         
             $.ajax({
-                url: 'queries.php',
-                type: 'POST',
-                data: {'mirna': mirnaSelected, 'flag': 100},
+                url: 'queries.php', // sends data to queries.php
+                type: 'POST', //sends the data in this format
+                data: {'mirna': mirnaSelected, 'flag': 100}, // when you want to get the data you will need to get the post of 'mirna'
                 //dataType: "json",
                 success: function(data) {
                 // if data is not empty
                 if(data){
                         $("#table").empty();
-                        var header = ["Chemical","miRNA","Response","Condition","Tech","PubId"];
-                        drawTable(JSON.parse(data));
+                        var header = ["Chemical","miRNA","Response","Condition","Tech","PubId"]; //probably not needed anymore
+                        drawTable(JSON.parse(data));// makes the google table
                         //$("#table").show();
                     }
                     else {
+                        //the data is empty
                         alert("No results for the selected miRNA. Select a different miRNA.");
                     }
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     console.log(jqXHR.responseText);
                     console.log(errorThrown);
+                    // if there is a failure on the queries page or in the ajax
                 }
             }); // end of ajax request
         }); // end of select change

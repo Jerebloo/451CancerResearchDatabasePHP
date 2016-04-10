@@ -21,6 +21,9 @@
     <script src="table.js"></script>
     <link rel="stylesheet" href="table.css">
 </head>
+
+<!-- the head contains scripts and css files that will be refeerenced throughout this page-->
+
 <body onload="init()">
     <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
         <div class="container">
@@ -49,7 +52,9 @@
             </div><!--/.nav-collapse -->
         </div><!--/.container-fluid -->
     </nav>
-        <!-- Main component for a primary marketing message or call to action -->
+
+    <!-- the nav tag contains the bar of tabs at the top of the page and within each tab is a li tag defined name of the tab -->
+    
         
         <div class="container">
              <p>This page will alow you to search the database.</p>
@@ -65,6 +70,9 @@
                     </form>                    
                 </div>                 
              </div>
+
+            <!--the tab content div contains a text box where a query can be made directly to the database -->
+
              <!--<ul id="tabs">
                 <li><a href="#about">SearchBox</a></li>
              </ul>
@@ -88,7 +96,7 @@
                 <div class="col-lg-8 col-md-6 col-sm-6" id="graph">
                 </div>
             </div>
-
+<!-- the row div sets the size contraints for the table and the graph -->
 
 <?php
 if ( ! empty($_POST['user'])){
@@ -120,7 +128,10 @@ $jsonForm = json_encode($data);
 
 ?>
 
-         
+<!-- the above php tag takes the txt from the text box uppon the user hitting submit, this is passed into a php variable
+then this txt is formulated into a query, then it is looped through and stored in an array of data, this is 
+cast into a json object
+-->         
  
         </div>
     </div><!--/.container-fluid -->
@@ -134,8 +145,11 @@ var jsonForm = <?php echo $jsonForm; ?>;
 createTable(jsonForm,"#table"); 
 createGraph(jsonForm,"#graph");
 
-
+//this script builds a table and a graph based on the d3 table and d3 graph code in table.js and newGraph.js
+// they are attached to the table and graph div id respectively 
 </script>
+
+
             
      <!-- /container -->
     <!-- Bootstrap core JavaScript
@@ -145,7 +159,7 @@ createGraph(jsonForm,"#graph");
     <script src="bootstrap-3.3.5-dist/js/bootstrap.min.js"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
    
-    
+    <!-- includes bootstrap javacsript files to be loaded at the end of the page for efficiency -->
 
    
 </bodyonload="init()">

@@ -1,39 +1,62 @@
 path.link {
   fill: none;
   stroke: rgb(175,175,175);
-  stroke-width: 2px;
+  
 }
+
+/*
+makes the lines grey by default, this will indicate no known association for 2 nodes 
+*/
 
 marker#down-regulated ,marker#Down-regulated, marker#downregulated, marker#Downregulated
 {
-
-  /*fill: rgb(230,100,140);*/
+ 
   fill: rgb(255,0,0);
 }
 
+/*
+the colors for the marker when the type column contains any of the # names, this color is red
+*/
+
 marker#up-regulated ,marker#Up-regulated, marker#upregulated, marker#Upregulated
 {
-   /*fill: rgb(70,200,170);*/
+  
    fill: rgb(2,58,2);
 }
 
+/*
+the colors for the marker when the type column contains any of the # names, this color is green
+*/
+
 path.link.down-regulated , path.link.Down-regulated, path.link.downregulated, path.link.Downregulated,path.link.Repression {
  
-  /*stroke: rgb(250,150,140);*/
+ 
   stroke: rgb(255,0,0);
 }
 
+/*
+the colors for the lne when the type column contains any of the path.link names, this color is red
+*/
+
 path.link.up-regulated , path.link.Up-regulated, path.link.upregulated, path.link.Upregulated, path.link.Activation, path.link.induction, path.link.Activates {
  
-  /*stroke: rgb(100,240,200);*/
+
   stroke: rgb(2,58,2);
 
 }
+
+/*
+the colors for the line when the type column contains any of the path.link names, this color is green
+*/
 
 path.link.normal
 {
   stroke: rgb(90,50,70);
 }
+
+/*
+gives a neutral color for normal type lines
+*/
 
 circle {
   fill: rgb(180,62,42);
@@ -41,14 +64,27 @@ circle {
   stroke-width: 2px;
 }
 
+/*
+gives the fill of the nodes (color) , the stroke (the color of the line outside the node), stroke-width gives how thick the edge around the 
+circle is 
+*/
+
 text {
   font: 18px helvetica;
   pointer-events: none;
   stroke:rgb(120,60,90);
 }
 
+/*
+text is set to 18px and helvetica font, the color is set to a dark neutral color
+*/
+
 text.shadow {
   stroke: rgb(255,255,255);
   stroke-width: 5px;
   stroke-opacity: 1;
 }
+
+/*
+places a white border outside the text so that it is easily distinguishable 
+*/
