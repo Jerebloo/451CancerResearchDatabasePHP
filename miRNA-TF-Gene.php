@@ -68,18 +68,37 @@
             <div>
 
                 <form ="" method='post'>
+                <tr> <th><i><a class="testTipOne embeddedAnchors" href="javascript:void(0);">Show tip</a></i> </th>  </tr>
+               <p>Enter miRNAs: </p> 
+               <td><textarea name="mirna" value="" rows = "3" cols="50"></textarea></td>
+               <p>Enter Genes: </p> 
+               <td><textarea name="gene" value="" rows = "3" cols="50"></textarea></td>
+               <p>Enter TF: </p> 
+               <td><textarea name="tf" value="" rows = "3" cols="50"></textarea></td>
                 
-               <p>Enter miRNAs: <p> 
-               <tr><td><textarea name="mirna" value="" rows = "3" cols="80"></textarea></td></tr>
-               <p>Enter Genes: <p> 
-               <tr><td><textarea name="gene" value="" rows = "3" cols="80"></textarea></td></tr>
-               <p>Enter TF: <p> 
-               <tr><td><textarea name="tf" value="" rows = "3" cols="80"></textarea></td></tr>
-                
-                <input type="submit" name="submit" value="Submit"></form>      
+                <input type="submit" name="submit" value="Submit">
+                <p> </p>
+ <td>   <textarea style="display: none" class="tipOne" disabled="disabled" rows="12" cols="60">Enter miRNAs, Genes,TFs (if more than one) as&#13;[comma separated] or [newline separated]
+                                                hsa-mir-127,hsa-mir-126  
+                                                NOTCH1,WDR20,CD8A  
+                                                NR3B3,klf2a 
+                                                click 'Submit'
+                                                 </textarea> </td>
+            </form>      
                 
             </div>
         <!-- this div builds 3 boxes and places them in a form of method post, what is entered in the 3 boxes will be stored in php -->
+
+<script src="http://code.jquery.com/jquery-1.11.3.js"></script>
+
+<script>
+$(".testTipOne").click(function(){
+        $(".tipOne").toggle( function() {
+        $(".testTipOne").text( 
+            $(this).is(':visible')? "Hide tip":  "Show tip");
+        });
+    });
+</script>
 
             <div class="row">
       <div class="col-sm-3"></div>
@@ -125,7 +144,7 @@ $gene = mysqli_real_escape_string($mirnabDb, $_POST['gene']);
         $trimmed2 = array();
                $str2 = preg_split('/,/', $gene);
             $str2 = preg_split('/[,|\r\n|\r|\n]+/', $gene);
-        //echo json_encode($str);
+
             for ($h=0;$h<count($str2);$h++) {
                     $trimmed2[$h] = trim($str2[$h]);
             }
@@ -156,7 +175,7 @@ $tf = mysqli_real_escape_string($mirnabDb, $_POST['tf']);
             distinct 
                 mirna_name as source, 
                 up_tf as target, 
-                gene_name as type, 
+                gene_name , 
                 gene_pubId
             from main_v2, upstream_tf,gene_v2
             where main_v2.link_id = upstream_tf.link_id
@@ -168,8 +187,6 @@ $tf = mysqli_real_escape_string($mirnabDb, $_POST['tf']);
             //declares the query that links mirnas to tfs and mirnas to genes         
 
 $result = mysqli_query($mirnabDb,$query);
-
-//echo $result;
 
  if ( ! $result ) {
         echo mysql_error();
@@ -220,7 +237,7 @@ else
     for (var iter = 0; iter < numRows; iter++) {
         dataT.setCell(iter, 0, jsonData[iter]['source']);
         dataT.setCell(iter, 1, jsonData[iter]['target']);
-        dataT.setCell(iter, 2, jsonData[iter]['type']);
+        dataT.setCell(iter, 2, jsonData[iter]['gene_name']);
         dataT.setCell(iter, 3, jsonData[iter]['gene_pubId']);
     };
     //grabs the data from the jsonData for the specified columns and places it in a table cell
@@ -238,7 +255,7 @@ else
 </script>
 
 
-<script src="multiSourceTargetGraph.js"></script> <!--uses the multiSourceTargetGraph as a reference for building a graph-->
+<script src="tempo.js"></script> <!--uses the multiSourceTargetGraph as a reference for building a graph-->
 
 <script>
 var jsonForm = <?php echo $jsonForm; ?>; // grabs php variable and stores it in javascript, this is the data from the query

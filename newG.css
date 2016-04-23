@@ -8,6 +8,11 @@ path.link {
 makes the lines grey by default, this will indicate no known association for 2 nodes 
 */
 
+marker
+{
+  fill: rgb(175,175,175);
+}
+
 marker#down-regulated ,marker#Down-regulated, marker#downregulated, marker#Downregulated
 {
  

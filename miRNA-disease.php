@@ -24,22 +24,6 @@
     <script type="text/javascript">
         google.load('visualization', '1', {packages: ['table']});
     </script>
-    <script>
-        function checkvalue(){
-            var min = document.getElementById("min").value;
-            var max = document.getElementById("max").value;;
-            
-            if(min<0 || min>1) alert("Min must be between 0 and 1");
-            if(max>1 || max<0) alert("Max must be between 0 and 1");
-            if(min>max) alert("Min value cannot be greater than Max value");
-        }
-    </script>
-    <script type="text/javascript">
-        function showValue(newValue)
-        {
-            document.getElementById("range").innerHTML=newValue;
-        }
-    </script>
     
 </head>
 <!-- the head tag contains the needed script imports for this page, additionally a min and max box are set, the value in them is 
@@ -100,32 +84,39 @@ obtained through the getElementById method -->
         
         <div class="tab-content">
             <div role="tabpanel" class="tab-pane fade in active" id="tab1">
+                 <tr> <th><i><a class="testTipOne embeddedAnchors" href="javascript:void(0);">Show tip</a></i> </th>  </tr>
                 <form id="inputform1" method='post'>
-                    <textarea name="user" value="" rows = "15" cols="70 "></textarea><br>
-                    <p style="padding: 10px"></p>
-                    <label>
-                        min: <input type="number" id="min" style="width: 40px; height: 40px">
-                    </label>
-                    <label>
-                        max: <input type="number" id="max" style="width: 40px; height: 40px">
-                    </label><br><br>
-                    <div style="width: 100; height: 50">
-                        <input type="range" min="0" max="1" step=".1" value="0" id="slider" onchange="showValue(this.value)">
-                        <span id="range">0</span>
-                    </div>
-                    <input type="submit" name="submit" value="Submit" onClick="checkvalue()">
+                  <td> <textarea name="user" value="" rows = "15" cols="50 "></textarea></td>
+                    <input type="submit" name="submit" value="Submit">
+                    <td> <textarea style="display: none" class="tipOne" disabled="disabled" rows="12" cols="45">Enter miRNAs (if more than one) as&#13;[comma separated] or [newline separated]
+                                                hsa-mir-21, hsa-mir-205 &#10;&#10;OR&#10;&#10;hsa-mir-21&#13;hsa-mir-205&#10;click 'Submit'
+                                                 </textarea> </td>
                 </form>
             </div>
             <div role="tabpanel" class="tab-pane fade" id="tab2">
+                 <tr> <th><i><a class="testTipOne embeddedAnchors" href="javascript:void(0);">Show tip</a></i> </th>  </tr>
                 <form id="inputform2" method='post' name="form2">
-                    <textarea name="user2" value="" rows = "15" cols="80" placeholder="Please enter one or more dis_name"></textarea><br><br>
+                  <td>  <textarea name="user2" value="" rows = "15" cols="50" placeholder="Please enter one or more dis_name"></textarea></td>
                     <input type="submit" name="submit" value="Submit">
+                    <td>   <textarea style="display: none" class="tipOne" disabled="disabled" rows="12" cols="45">Enter diseases (if more than one) as&#13;[comma separated] or [newline separated]
+                                                lung cancer, breast cancer &#10;&#10;OR&#10;&#10;lung cancer&#13;breast cancer&#10;click 'Submit'
+                                                 </textarea> </td>
                 </form>
             </div>
         </div>
         <p style="padding:20px;"></p>
       <!-- create min and max text boxes , a slider is also included, this functionality is not a part of this page however  -->
 
+<script src="http://code.jquery.com/jquery-1.11.3.js"></script>
+
+<script>
+$(".testTipOne").click(function(){
+        $(".tipOne").toggle( function() {
+        $(".testTipOne").text( 
+            $(this).is(':visible')? "Hide tip":  "Show tip");
+        });
+    });
+</script>
 
            <div class="row">
       <div class="col-sm-3"></div>
@@ -197,13 +188,13 @@ $mirna = mysqli_real_escape_string($mirnabDb, $_POST['user']);
        $trimmed = array();
              $str = preg_split('/,/', $mirna);
             $str = preg_split('/[,|\r\n|\r|\n]+/', $mirna);
-        //echo json_encode($str);
+   
             for ($i=0;$i<count($str);$i++) {
                     $trimmed[$i] = trim($str[$i]);
             }
         $strNew = implode("','", $trimmed);
         $strNew = str_replace('\r\n',"','" , $strNew);
-        echo $strNew;
+        
 
         // the users input is taken in and split by commas and newline, then reattached 
         // with single qoutes and commas
@@ -252,7 +243,7 @@ $mirna = mysqli_real_escape_string($mirnabDb, $_POST['user']);
                 
 $result = mysqli_query($mirnabDb,$query);
 $resultGraph= mysqli_query($mirnabDb,$graphQuery);
-//echo $result;
+
  if ( ! $result || ! $resultGraph) {
         echo mysql_error();
         die;
@@ -272,9 +263,7 @@ $jsonGraph=json_encode($dataGraph);
 //2  results are taken in for the table and graph queries made above, they are looped through and 
 //split into an array, then they are cast into json type objects 
 ?>
-
-
-                  <script src="newGraph.js"></script>
+                  <script src="tempo.js"></script>
 
 <script>
    function drawTable(jsonData) {
@@ -300,7 +289,7 @@ $jsonGraph=json_encode($dataGraph);
     };
 
     var options = {allowHtml: true, alternatingRowStyle: true}; 
-    //options['cssClassNames'] = cssNamesOne;
+ 
     options['page'] = 'enable'; options['pageSize'] = 10; options['pagingSymbols'] = {prev: 'prev', next: 'next'}; //options['pagingButtonsConfiguration'] = 'auto';
     
     var table = new google.visualization.Table(document.getElementById('table'));
@@ -321,7 +310,7 @@ $jsonGraph=json_encode($dataGraph);
       
     //add class attribute to element  
     function addclass(element, classname){
-        console.log("In add class");
+       
         var newclassname;
         var tabpaneactiveclass = "tab-pane fade in active";
         var tab2=document.getElementById("tabheader2");
@@ -341,7 +330,7 @@ $jsonGraph=json_encode($dataGraph);
     }
     //remove class attribute from element
     function removeclass(classname, element) {
-        console.log("In remove class");
+       
         var cn = element.className;
         if(cn=="active"){
             cn=" ";
@@ -349,16 +338,11 @@ $jsonGraph=json_encode($dataGraph);
             cn=" ";
             cn="tab-pane fade";
         }
-        //var rxp = new RegExp( "s?b"+classname+"b", "g" );
-        //cn = cn.replace( rxp, ' ' );
+
         element.className = cn;
     }
     addclass(tab, activeclass);
     addclass(tabpane, inactiveclass);
-    
-    //Testing/Backtracking
-    console.log("class tab1: "+tab.className);
-    console.log("class tabpane1: "+tabpane.className);
     
     //Draws table and graph with data from php script
     var jsonForm = <?php echo $jsonForm;?>;
@@ -369,18 +353,6 @@ $jsonGraph=json_encode($dataGraph);
 
  
         </div>
-
-<!--<div class="tabContent" id="tab2">
-            <h2>Please enter one or more dis_name</h2>
-            <div>
-                <form ="" method='post'>
-                
-           <tr><td><textarea name="user2" value="" rows = "15" cols="80"></textarea></td></tr>
-                
-                
-                <input type="submit" name="submit" value="Submit"></form>
-                    
-    </div>-->
 
             <div class="row">
       <div class="col-sm-3"></div>
@@ -459,7 +431,7 @@ $trimmed = array();
 
 $result = mysqli_query($mirnabDb,$query);
 $resultGraph= mysqli_query($mirnabDb,$graphQuery);
-//echo $result;
+
  if ( ! $result || ! $resultGraph) {
         echo mysql_error();
         die;
@@ -485,15 +457,11 @@ $jsonGraph2=json_encode($dataGraph);
     var activeclass = "active";
     var inactiveclass = "in active";
     var tab2=document.getElementById("tabheader2");
-    var tabpane2=document.getElementById("tab2");   
-    console.log("class tab2: "+tab2.className);
-    console.log("class tabpane2: "+tabpane2.className);
-    console.log("class tab1: "+document.getElementById("tabheader1").className);
-    console.log("class tabpane1: "+document.getElementById("tab1").className);
+    var tabpane2=document.getElementById("tab2"); 
     
     //sets elemnts class
     function addclass(element, classname){
-        console.log("in addclass");
+   
         var newclassname;
         var tabpaneactiveclass = "tab-pane fade in active";
         var tab=document.getElementById("tabheader1");
@@ -501,15 +469,8 @@ $jsonGraph2=json_encode($dataGraph);
         if(!element.className){
             element.className=classname;
             removeclass("active", tab);
-            removeclass(tabpaneactiveclass, tabpane)
-            
-            //Testing/Bactracking
-            console.log("******After remove classes methods****");
-            console.log("class tab2: "+tab2.className);
-            console.log("class tabpane2: "+tabpane2.className);
-            console.log("class tab1: "+tab.className);
-            console.log("class tabpane1: "+tabpane.className);
-            console.log("******After remove classes methods****")
+            removeclass(tabpaneactiveclass, tabpane);
+        
         }else{
             newclassname=element.className;
             newclassname+=" ";
@@ -519,7 +480,7 @@ $jsonGraph2=json_encode($dataGraph);
     }
     //removes active class from tab
     function removeclass(classname, element) {
-        console.log("In remove class");
+       
         var cn = element.className;
         if(cn=="active"){
             cn=" ";
@@ -527,8 +488,7 @@ $jsonGraph2=json_encode($dataGraph);
             cn=" ";
             cn="tab-pane fade";
         }
-        //var rxp = new RegExp( "s?b"+classname+"b", "g" );
-        //cn = cn.replace( rxp, ' ' );
+        
         element.className = cn;
     }
   

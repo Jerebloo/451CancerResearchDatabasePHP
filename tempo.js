@@ -1,6 +1,10 @@
 function createGraph(jsonData,tabDiv)
 {
 
+  var myHeaders = Object.keys(jsonData[0]);
+
+  console.log(myHeaders);
+
   jsonData.sort(function(a,b){if(a.source>b.source){return 1;}
   else if(a.source<b.source){return-1;}
   else{
@@ -38,6 +42,7 @@ for(var i=0;i<jsonData.length;i++) {
 //stores sources and targets into nodes
 //assings nodes to groups, sources and targets, the group number is used later to determine its color
 
+
     var arrows=[];
 
     for(var i=0;i<jsonData.length;i++){arrows[i]=jsonData[i].type;};
@@ -64,7 +69,7 @@ for(var i=0;i<jsonData.length;i++) {
     }
     //separates types into up or down regulated and stores them in individual arrays
       
-    
+
    
     /************************************************ */
     //var w=1000,h=800;
@@ -99,6 +104,9 @@ for(var i=0;i<jsonData.length;i++) {
 // append graph to the provided div , appends a svg:svg this is essentially a container for whats
 // going to be in the graph, width and height are applied to the container
     
+if (myHeaders[2] == "type")
+{
+
     svg.append("svg:defs").selectAll("marker")
     .data(down_regulated)
     .enter().append("svg:marker")
@@ -137,16 +145,46 @@ for(var i=0;i<jsonData.length;i++) {
     .append("svg:path")
     .attr("d", "M0,-5L10,0L0,5");
 
+}
+
+else if(myHeaders[2] != "type")
+{
+ svg.append("svg:defs").selectAll("marker")
+    .data(arrows)      // Different link/path types can be defined here
+    .enter().append("svg:marker")    // This section adds in the arrows
+    .attr("id", String)
+    .attr("viewBox", "0 -5 10 10")
+    .attr("refX", 15)
+    .attr("refY", 0)
+    .attr("markerWidth", 15)
+    .attr("markerHeight", 15)
+    .attr("orient", "auto")
+    .attr("markerUnits","userSpaceOnUse")
+    .append("svg:path")
+    .attr("d", "M0,-5L10,0L0,5");
+
     //same as above except markers are attached to upregulated data and 
     //the path that is drawn is an arrow
+}
 
+if(myHeaders[3] = "numb")
+{
     var path=svg.append("svg:g").selectAll("path")
     .data(force.links())
     .enter().append("svg:path")
     .attr("class",function(d){return"link "+d.type;})
     .attr("marker-end",function(d){return"url(#"+d.type+")";})
     .attr("stroke-width", function(d){return d.numb *5;});
-    
+}
+
+else
+{
+     var path=svg.append("svg:g").selectAll("path")
+    .data(force.links())
+    .enter().append("svg:path")
+    .attr("class",function(d){return"link "+d.type;})
+    .attr("marker-end",function(d){return"url(#"+d.type+")";})
+}
   //sets path width to be dynamic based on number of associations
   //note, arrows/plungers are considered paths, so are effected;
 

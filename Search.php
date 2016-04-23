@@ -1,7 +1,7 @@
 ﻿<?php
     require_once('dBaseAccess.php');
     //fetch table rows from mysql db
-    $sql = "select chem_name from chemical limit 10";
+    $sql = "select distinct chem_name from chemical";
     $result = mysqli_query($mirnabDb, $sql) or die("Error in Selecting " . mysqli_error($mirnabDb));
 
     //create an array
@@ -17,9 +17,9 @@
 ?>
 
 <script>
-    var pech = <?php echo $dropnames; ?>;
+    var chemNames = <?php echo $dropnames; ?>;
 
-    //grabs the php variable holding the chemicals and stores it in javascript variable pech
+    //grabs the php variable holding the chemicals and stores it in javascript variable chemNames
 </script>
 
 
@@ -60,7 +60,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="Home.html">LOGO</a>
+                <a class="navbar-brand" href="Home.html">iMir</a>
             </div>
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
@@ -114,7 +114,7 @@
        
         window.onload = function () 
         {
-            var JSON = pech, 
+            var JSON = chemNames, 
             select = document.getElementById("selector");
             var option = document.createElement("option");
             option.value = "Select chemical";
@@ -122,7 +122,7 @@
             select.appendChild(option);
 
 
-            for (var i = 0 ;  i < pech.length; i++)
+            for (var i = 0 ;  i < chemNames.length; i++)
             {   
                 //at = JSON[i];
                 //console.log(at);
@@ -135,7 +135,7 @@
         };
 
         //this script builds a selector that will attach to the selector div
-        //it appends a new chemical that can be selected for each chemical in pech
+        //it appends a new chemical that can be selected for each chemical in chemNames
 
     </script>
 
@@ -175,16 +175,16 @@
         };
     
         var options = {allowHtml: true, alternatingRowStyle: true}; 
-        //options['cssClassNames'] = cssNamesOne;
-        options['page'] = 'enable'; options['pageSize'] = 30; options['pagingSymbols'] = {prev: 'prev', next: 'next'}; //options['pagingButtonsConfiguration'] = 'auto';
-        
+
+        options['page'] = 'enable'; options['pageSize'] = 10; options['pagingSymbols'] = {prev: 'prev', next: 'next'}; //options['pagingButtonsConfiguration'] = 'auto';
+        //paging size set to 10, 10 rows will be displayed at one time
+
         var table = new google.visualization.Table(document.getElementById('tableGoogle'));
         table.draw(dataT, options); // , {showRowNumber: true, width: '100%', height: '100%'});
     }
     //this script builds the table for this page, rows are added based on the length of the jsonData and columns are added with 
 // specific names , then the jsonData is iterated through and the cells of the table are created , options make it possible to have paging 
 //enabled , the buttons are labled prev and next , the table is attached to a div id = table  in the getElementById
-
 
     
         $("#selector").change(function() {
@@ -203,7 +203,7 @@
                         $("#table").empty();
                         var header = ["Chemical","miRNA","Response","Condition","Tech","PubId"]; //probably not needed anymore
                         drawTable(JSON.parse(data));// makes the google table
-                        //$("#table").show();
+
                     }
                     else {
                         //the data is empty

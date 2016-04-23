@@ -22,7 +22,7 @@
     <link rel="stylesheet" href="table.css">
 </head>
 
-<!-- the head contains scripts and css files that will be refeerenced throughout this page-->
+<!-- the head contains scripts and css files that will be referenced throughout this page-->
 
 <body onload="init()">
     <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -34,7 +34,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="Home.html">LOGO</a>
+                <a class="navbar-brand" href="Home.html">iMir</a>
             </div>
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
@@ -72,21 +72,6 @@
              </div>
 
             <!--the tab content div contains a text box where a query can be made directly to the database -->
-
-             <!--<ul id="tabs">
-                <li><a href="#about">SearchBox</a></li>
-             </ul>
-
-            <div class="tabContent" id="about">
-                <h2>Please enter a query</h2>
-                <div>
-                    <form ="" method='post'>
-                    
-                    <input type = "text" name="user" value ="">
-                    
-                    
-                    <input type="submit" name="submit" value="Submit"></form>
-                                
                     
             </div>-->
 
@@ -108,8 +93,6 @@ echo $name;
 
 $result = mysqli_query($mirnabDb,$_POST['user']);
 
-//echo $result;
-
  if ( ! $result ) {
         echo mysql_error();
         die;
@@ -121,8 +104,6 @@ $data = array();
         $data[] = mysqli_fetch_assoc($result);
     }
 $jsonForm = json_encode($data);
-
-//echo $jsonForm;
 
 }
 

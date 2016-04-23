@@ -40,9 +40,9 @@ var linkData={};
 var t=0;
 for(var g=0;g<jsonData.length;g++){
 
-  linkData[t] = {source: jsonData[g].source,target: jsonData[g].target};
+  linkData[t] = {source: jsonData[g].target,target: jsonData[g].source};
   t++;
-  linkData[t] = {source: jsonData[g].target,target: jsonData[g].type};
+  linkData[t] = {source: jsonData[g].source,target: jsonData[g].type};
   t++;
 };
 
