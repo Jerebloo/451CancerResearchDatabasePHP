@@ -19,7 +19,7 @@
 			"SELECT chem_name , mirna_name, response, cond, tech, chem_pubId, chem_ctd_id
 			from chemical, main_v2 
 			where main_v2.chem_id=chemical.chem_id 
-			and chem_name in ('".$mirna."')  LIMIT 30";
+			and chem_name in ('".$mirna."') ";
 
 		$result = mysqli_query($mirnabDb, $query);
 

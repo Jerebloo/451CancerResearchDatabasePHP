@@ -39,7 +39,8 @@ if(document.getElementById('tabs') !=null )
         if ( i != 0 ) contentDivs[id].className = 'tabContent hide';
         i++;
     }
-
+}//end init
+}//end if
 
 function showTab() {
     var selectedId = getHash( this.getAttribute('href') );
@@ -71,6 +72,6 @@ function getHash( url ) {
     return url.substring( hashPos + 1 );
 }
 
-}//end if
 
-}//close init
+
+

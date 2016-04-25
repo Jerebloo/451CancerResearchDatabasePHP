@@ -1,3 +1,7 @@
+/*
+makes the lines grey by default, this will indicate no known association for 2 nodes 
+*/
+
 path.link {
   fill: none;
   stroke: rgb(175,175,175);
@@ -5,13 +9,17 @@ path.link {
 }
 
 /*
-makes the lines grey by default, this will indicate no known association for 2 nodes 
+makes the arrows grey by default, this will indicate no known association
 */
 
 marker
 {
   fill: rgb(175,175,175);
 }
+
+/*
+the colors for the marker when the type column contains any of the # names, this color is red
+*/
 
 marker#down-regulated ,marker#Down-regulated, marker#downregulated, marker#Downregulated
 {
@@ -20,7 +28,7 @@ marker#down-regulated ,marker#Down-regulated, marker#downregulated, marker#Downr
 }
 
 /*
-the colors for the marker when the type column contains any of the # names, this color is red
+the colors for the marker when the type column contains any of the # names, this color is green
 */
 
 marker#up-regulated ,marker#Up-regulated, marker#upregulated, marker#Upregulated
@@ -30,7 +38,7 @@ marker#up-regulated ,marker#Up-regulated, marker#upregulated, marker#Upregulated
 }
 
 /*
-the colors for the marker when the type column contains any of the # names, this color is green
+the colors for the lne when the type column contains any of the path.link names, this color is red
 */
 
 path.link.down-regulated , path.link.Down-regulated, path.link.downregulated, path.link.Downregulated,path.link.Repression {
@@ -40,7 +48,7 @@ path.link.down-regulated , path.link.Down-regulated, path.link.downregulated, pa
 }
 
 /*
-the colors for the lne when the type column contains any of the path.link names, this color is red
+the colors for the line when the type column contains any of the path.link names, this color is green
 */
 
 path.link.up-regulated , path.link.Up-regulated, path.link.upregulated, path.link.Upregulated, path.link.Activation, path.link.induction, path.link.Activates {
@@ -51,7 +59,7 @@ path.link.up-regulated , path.link.Up-regulated, path.link.upregulated, path.lin
 }
 
 /*
-the colors for the line when the type column contains any of the path.link names, this color is green
+gives a neutral color for normal type lines
 */
 
 path.link.normal
@@ -60,7 +68,8 @@ path.link.normal
 }
 
 /*
-gives a neutral color for normal type lines
+gives the fill of the nodes (color) , the stroke (the color of the line outside the node), stroke-width gives how thick the edge around the 
+circle is 
 */
 
 circle {
@@ -70,8 +79,7 @@ circle {
 }
 
 /*
-gives the fill of the nodes (color) , the stroke (the color of the line outside the node), stroke-width gives how thick the edge around the 
-circle is 
+text is set to 18px and helvetica font, the color is set to a dark neutral color
 */
 
 text {
@@ -81,7 +89,7 @@ text {
 }
 
 /*
-text is set to 18px and helvetica font, the color is set to a dark neutral color
+places a white border outside the text so that it is easily distinguishable 
 */
 
 text.shadow {
@@ -90,6 +98,3 @@ text.shadow {
   stroke-opacity: 1;
 }
 
-/*
-places a white border outside the text so that it is easily distinguishable 
-*/

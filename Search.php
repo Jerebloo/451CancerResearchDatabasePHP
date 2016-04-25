@@ -2,6 +2,8 @@
     require_once('dBaseAccess.php');
     //fetch table rows from mysql db
     $sql = "select distinct chem_name from chemical";
+ //this query grabs the chemical names from the database, this data  dropnames  is used to build the dropdown later on   
+
     $result = mysqli_query($mirnabDb, $sql) or die("Error in Selecting " . mysqli_error($mirnabDb));
 
     //create an array
@@ -10,16 +12,13 @@
         $reparray[] = mysqli_fetch_assoc($result);
     }
     $dropnames = json_encode($reparray);
-    //close the db connection
-   // mysqli_close($connection);
+   
  
- //this query grabs the chemical names from the database, this data  dropnames  is used to build the dropdown later on   
 ?>
 
 <script>
-    var chemNames = <?php echo $dropnames; ?>;
-
     //grabs the php variable holding the chemicals and stores it in javascript variable chemNames
+    var chemNames = <?php echo $dropnames; ?>;
 </script>
 
 
@@ -61,7 +60,8 @@
                     <span class="icon-bar"></span>
                 </button>
                
-            </div>
+            </div>     
+            <!-- the nav tag contains the bar of tabs at the top of the page and within each tab is a li tag defined name of the tab -->
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li><a href="Home.html"><span class="glyphicon glyphicon-home"
@@ -76,7 +76,6 @@
             </div><!--/.nav-collapse -->
         </div><!--/.container-fluid -->
     </nav>
-     <!-- the nav tag contains the bar of tabs at the top of the page and within each tab is a li tag defined name of the tab -->
     <div class="container">
         <div class="page-header">
             <h1>Search Database</h1><small>This page will alow you to search a specific element by selecting 
@@ -85,6 +84,8 @@
         <div>
             <select id="selector"> </select>
         </div>
+
+         <!-- the row div holds the table-->
     
         <div class="row">
             <div class="col-sm-3"></div>
@@ -101,15 +102,11 @@
         </div>
     </div>
     
-    <!-- the row div holds the table below that the graph is attached-->
-        
-    <!-- /container -->
-    <!-- 
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
+   
 
     <script>
-       
+         //this script builds a selector that will attach to the selector div
+        //it appends a new chemical that can be selected for each chemical in chemNames
         window.onload = function () 
         {
             var JSON = chemNames, 
@@ -122,8 +119,7 @@
 
             for (var i = 0 ;  i < chemNames.length; i++)
             {   
-                //at = JSON[i];
-                //console.log(at);
+              
                 name = JSON[i].chem_name;
                 var option = document.createElement("option");
                 option.value = name;
@@ -132,20 +128,23 @@
             };
         };
 
-        //this script builds a selector that will attach to the selector div
-        //it appends a new chemical that can be selected for each chemical in chemNames
-
+    
     </script>
 
+<!-- jetpack may not be needed-->
 
  <script src="http://code.jquery.com/jquery-1.11.3.js"></script>
  <script src="https://rawgit.com/gka/d3-jetpack/master/d3-jetpack.js"></script>
-
-<!-- jetpack may not be needed-->
  
   <script>
+  //jsonData is passed into the google table function and its length, and cell data are used
+  //to determine the output table
     function drawTable(jsonData) {
         
+  //this script builds the table for this page, rows are added based on the length of the jsonData and columns are added with 
+// specific names , then the jsonData is iterated through and the cells of the table are created , options make it possible to have paging 
+//enabled , the buttons are labled prev and next , the table is attached to a div id = table  in the getElementById
+
         var dataT = new google.visualization.DataTable();
         var numRows = jsonData.length;
         dataT.addRows(numRows);
@@ -180,9 +179,7 @@
         var table = new google.visualization.Table(document.getElementById('tableGoogle'));
         table.draw(dataT, options); // , {showRowNumber: true, width: '100%', height: '100%'});
     }
-    //this script builds the table for this page, rows are added based on the length of the jsonData and columns are added with 
-// specific names , then the jsonData is iterated through and the cells of the table are created , options make it possible to have paging 
-//enabled , the buttons are labled prev and next , the table is attached to a div id = table  in the getElementById
+  
 
     
         $("#selector").change(function() {
@@ -209,17 +206,16 @@
                     }
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
+                    // if there is a failure on the queries page or in the ajax
                     console.log(jqXHR.responseText);
                     console.log(errorThrown);
-                    // if there is a failure on the queries page or in the ajax
+        
                 }
             }); // end of ajax request
         }); // end of select change
   </script>
 
 
-
-    
   <script src="bootstrap-3.3.5-dist/js/bootstrap.min.js"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
   
