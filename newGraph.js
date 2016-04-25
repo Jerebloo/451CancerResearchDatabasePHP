@@ -1,6 +1,10 @@
 function createGraph(jsonData,tabDiv)
 {
 
+  var myHeaders = Object.keys(jsonData[0]);
+
+  console.log(myHeaders);
+
   jsonData.sort(function(a,b){if(a.source>b.source){return 1;}
   else if(a.source<b.source){return-1;}
   else{
@@ -30,18 +34,89 @@ for(var i=0;i<jsonData.length;i++) {
 }
 // attaches a number to how many links (source target pairs) exist to the jsonData
 
-    var nodes={};
-    jsonData.forEach(function(link){
-      link.source = nodes[link.source] || (nodes[link.source]={name:link.source,group:0});
-      link.target = nodes[link.target] || (nodes[link.target]={name:link.target,group:1});
-    });
+
 //stores sources and targets into nodes
 //assings nodes to groups, sources and targets, the group number is used later to determine its color
 
-    var arrows=[];
+  var nodes={};
+    jsonData.forEach(function(link){
+        link.source = nodes[link.source] ||
+      (nodes[link.source]={name:link.source,group:0});
+        
+        link.target = nodes[link.target] ||
+      (nodes[link.target]={name:link.target,group:1});
 
+if(myHeaders[0]=="source" && myHeaders[1]=="target" && myHeaders[2]=="gene_name"){
+        link.type = nodes[link.type] ||
+      (nodes[link.gene_name]={name:link.gene_name,group:2});
+}
+  });
+
+
+
+    
+if(myHeaders[0]=="source" && myHeaders[1]=="target" && myHeaders[2]=="gene_name")
+{
+
+var linkData={};
+var t=0;
+for(var g=0;g<jsonData.length;g++){
+
+  linkData[t] = {source: jsonData[g].target,target: jsonData[g].source};
+  t++;
+  linkData[t] = {source: jsonData[g].source,target: jsonData[g].type};
+  t++;
+};
+
+//Build the link data, in this case miRNAS target TFs and TFs target genes, this makes an object that is twice the size of the jsonData
+//this is done because the .links function of d3  expects an object  with data in this format {source: "hsa...", target:"Tf"}
+
+var newLinkData = d3.values(linkData);
+
+// .links will expect an object of objects with no incremented key, d3.values reformats linkData to have this property
+
+newLinkData.sort(function(a,b){if(a.source.name>b.source.name){return 1;}
+  else if(a.source.name<b.source.name){return-1;}
+  else{
+    if(a.target.name>b.target.name){return 1;}
+
+    if(a.target.name<b.name) {
+      return-1;
+    }
+
+    else{
+      return 0;
+    }
+  }
+});
+
+//sorts the links so they are grouped together by similar name, this is neccessary for the linkum loop to work because
+//it checks for similarities by looking at the previous object 
+
+for(var i=0;i<newLinkData.length;i++) {
+  if(i!=0&&newLinkData[i].source.name==newLinkData[i-1].source.name&&newLinkData[i].target.name==newLinkData[i-1].target.name) {
+    newLinkData[i].linknum=newLinkData[i-1].linknum+1;
+  }
+  else
+  {
+    newLinkData[i].linknum=1;
+  }
+}
+
+//applies a linkum to all the objects in newLinkData, can be accessed with newLinkData.linknum, this number counts how many times
+//a  source target pair occurs, the linkum is increased for each pair. This number factors into how curved the arc of a new line
+//will be 
+}
+
+var arrows=[];
+
+if(myHeaders[0]=="source" && myHeaders[1]=="target" && myHeaders[2]=="gene_name")
+{
+    for(var i=0;i<newLinkData.length;i++){arrows[i]=newLinkData[i].source.name;};
+}
+ else{
     for(var i=0;i<jsonData.length;i++){arrows[i]=jsonData[i].type;};
-   
+   }
     //stores type data in arrows , taken from the jsonData
 
     /************************************************ */
@@ -64,16 +139,27 @@ for(var i=0;i<jsonData.length;i++) {
     }
     //separates types into up or down regulated and stores them in individual arrays
       
-    
+
    
     /************************************************ */
     //var w=1000,h=800;
-    var w=1200,h=1500;
+    var w=2000,h=1100;
 
     //gives the size of the graph
 
     var w = document.getElementById("graph").offsetWidth;
 
+if(myHeaders[0]=="source" && myHeaders[1]=="target" && myHeaders[2]=="gene_name"){
+     var force=d3.layout.force()
+    .nodes(d3.values(nodes))
+    .links(newLinkData)
+    .size([w,h])
+    .linkDistance(300)
+    .charge(-1000)
+    .on("tick",tick)
+    .start();
+}
+else{
     var force=d3.layout.force()
     .nodes(d3.values(nodes))
     .links(jsonData)
@@ -82,7 +168,7 @@ for(var i=0;i<jsonData.length;i++) {
     .charge(-1000)
     .on("tick",tick)
     .start();
-
+}
 //build the force layout object, attaches nodes, links, the size of the graph window, the 
 //distance between the nodes
 //the charge, which indicates how repelled nodes are from eachother
@@ -99,13 +185,16 @@ for(var i=0;i<jsonData.length;i++) {
 // append graph to the provided div , appends a svg:svg this is essentially a container for whats
 // going to be in the graph, width and height are applied to the container
     
+if (myHeaders[2] == "type")
+{
+
     svg.append("svg:defs").selectAll("marker")
     .data(down_regulated)
     .enter().append("svg:marker")
     .attr("id",String).attr("viewBox","0 -5 10 10")
-    .attr("refX",17)
+    .attr("refX",23)
     .attr("refY",0)
-    .attr("markerWidth",13)
+    .attr("markerWidth",7)
     .attr("markerHeight",26)
     .attr("orient","auto")
     .attr("markerUnits","userSpaceOnUse")
@@ -137,8 +226,30 @@ for(var i=0;i<jsonData.length;i++) {
     .append("svg:path")
     .attr("d", "M0,-5L10,0L0,5");
 
+}
+
+else if(myHeaders[2] != "type")
+{
+ svg.append("svg:defs").selectAll("marker")
+    .data(arrows)      // Different link/path types can be defined here
+    .enter().append("svg:marker")    // This section adds in the arrows
+    .attr("id", String)
+    .attr("viewBox", "0 -5 10 10")
+    .attr("refX", 15)
+    .attr("refY", 0)
+    .attr("markerWidth", 15)
+    .attr("markerHeight", 15)
+    .attr("orient", "auto")
+    .attr("markerUnits","userSpaceOnUse")
+    .append("svg:path")
+    .attr("d", "M0,-5L10,0L0,5");
+
     //same as above except markers are attached to upregulated data and 
     //the path that is drawn is an arrow
+}
+
+if(myHeaders[3] == "numb")
+{
 
     var path=svg.append("svg:g").selectAll("path")
     .data(force.links())
@@ -146,7 +257,27 @@ for(var i=0;i<jsonData.length;i++) {
     .attr("class",function(d){return"link "+d.type;})
     .attr("marker-end",function(d){return"url(#"+d.type+")";})
     .attr("stroke-width", function(d){return d.numb *5;});
-    
+}
+
+else
+{
+
+    if(myHeaders[0]=="source" && myHeaders[1]=="target" && myHeaders[2]=="gene_name")
+    {
+    var path=svg.append("svg:g").selectAll("path")
+    .data(force.links())
+    .enter().append("svg:path")
+    .attr("class",function(d){return"link "+d.source.name;})
+    .attr("marker-end",function(d){return"url(#"+d.source.name+")";})
+    }
+    else{
+     var path=svg.append("svg:g").selectAll("path")
+    .data(force.links())
+    .enter().append("svg:path")
+    .attr("class",function(d){return"link "+d.type;})
+    .attr("marker-end",function(d){return"url(#"+d.type+")";})
+    }
+}
   //sets path width to be dynamic based on number of associations
   //note, arrows/plungers are considered paths, so are effected;
 

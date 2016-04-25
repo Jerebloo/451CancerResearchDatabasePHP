@@ -1,5 +1,13 @@
 
+/* 
+this file creates the style for the legend table, thin light blue lines are drawn for the border and 
+for the cells of the table
+padding gives the spacing around the element we're boxing in
+the border gives the type of line for the table
+*/
+
 td, th {
     padding: 1px 4px;
     border: 2px rgb(160,200,200) solid;
 }
+

@@ -10,15 +10,15 @@
     <title>Analysis page</title>
     <!-- Bootstrap core CSS -->
     <link href="bootstrap-3.3.5-dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="tabsStyle.css" rel="stylesheet">
+
     <link rel="stylesheet" href="newG.css">
     <link href="css/mystyles.css" rel="stylesheet">
     <link href="css/font-awesome.min.css" rel="stylesheet">
     <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
     <script src="tabScript.js"></script>
-    <script src="table.js"></script>
+   
     <link rel="stylesheet" href="table.css">
-    <link rel="stylesheet" href="googleTableCss.css">
+  
     <script src= "http://www.google.com/uds/modules/gviz/gviz-api.js"> </script>
     <script src= "https://www.google.com/jsapi"> </script>
     <script type="text/javascript">
@@ -41,20 +41,19 @@ obtained through the getElementById method -->
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="Home.html">iMir</a>
+               
                 </div>
                 <div id="navbar" class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
                         <li><a href="Home.html"><span class="glyphicon glyphicon-home"
-                            aria-hidden="true"></span> Home</a></li>
+                            aria-hidden="true"></span> iMir</a></li>
                         <li><a href="Search.php"><span class="glyphicon glyphicon-search"
                             aria-hidden="true"></span> Search</a></li>
-                        <li><a href="Analysis.php"><span class="glyphicon glyphicon-cog"
-                            aria-hidden="true"></span> Analysis</a></li>
+                        
                         <li ><a href="miRNA-disease.php">miRNA-disease</a></li>
                         <li><a href="miRNA-TF-Gene.php">miRNA-TF-Gene</a></li>
                         <li class ="active"><a href="miRNA-Drug.php">miRNA-Drug</a></li>
-                        <li><a href="miRNA-Methylation.php">miRNA methylation</a></li>
+                      
                     </ul>
                 </div><!--/.nav-collapse -->
             </div><!--/.container-fluid -->
@@ -63,8 +62,8 @@ obtained through the getElementById method -->
         <!-- Main component for a primary marketing message or call to action -->
         <div class="page-header">
             <h1>Search Database</h1><small>This page will alow you to search the database in two ways. First by entering
-                one or more miRNA Drugs in the first tab and getting a result and secondly by entering one or 
-                more Drug miRNAs in the second tab and getting an output.
+                one or more miRNAs in the first tab and getting a result and secondly by entering one or 
+                more Drugs in the second tab and getting an output.
             </small>
         </div>
         
@@ -84,23 +83,33 @@ obtained through the getElementById method -->
         
         <div class="tab-content">
             <div role="tabpanel" class="tab-pane fade in active" id="tab1">
-                <tr> <th><i><a class="testTipOne embeddedAnchors" href="javascript:void(0);">Show tip</a></i> </th>  </tr>
+                
                 <form id="inputform1" method='post'>
+
+  <div style=" margin-left: 550px;">
+                 <i><a class="testTipOne embeddedAnchors" href="javascript:void(0);">Show tip</a></i>
+                </div>  
+
                  <td>   <textarea name="user" value="" rows = "15" cols="50"></textarea> </td>
                     <input type="submit" name="submit" value="Submit">
-                  <td>   <textarea style="display: none" class="tipOne" disabled="disabled" rows="12" cols="45">Enter miRNAs (if more than one) as&#13;[comma separated] or [newline separated]
-                                                hsa-mir-21, hsa-mir-205 &#10;&#10;OR&#10;&#10;hsa-mir-21&#13;hsa-mir-205&#10;click 'Submit'
+                  <td>   <textarea style="display: none" class="tipOne" disabled="disabled" rows="15" cols="45">Enter miRNAs (if more than one) as&#13;[comma separated] or [newline separated]
+hsa-mir-21, hsa-mir-205, hsa-mir-193b &#10;&#10;OR&#10;&#10;hsa-mir-21&#13;hsa-mir-205&#10;hsa-mir-193b&#10;click 'Submit'
                                                  </textarea> </td>
                 </form>
                
             </div>
             <div role="tabpanel" class="tab-pane fade" id="tab2">
-                  <tr> <th><i><a class="testTipOne embeddedAnchors" href="javascript:void(0);">Show tip</a></i> </th>  </tr>
+                 
                 <form id="inputform2" method='post' name="form2">
+
+  <div style=" margin-left: 550px;">
+                 <i><a class="testTipOne embeddedAnchors" href="javascript:void(0);">Show tip</a></i>
+                </div>  
+
                   <td>  <textarea name="user2" value="" rows = "15" cols="50"></textarea></td>
                     <input type="submit" name="submit" value="Submit">
-                      <td>   <textarea style="display: none" class="tipOne" disabled="disabled" rows="12" cols="45">Enter Drugs (if more than one) as&#13;[comma separated] or [newline separated]
-                                                cisplatin, insulin &#10;&#10;OR&#10;&#10;cisplatin&#13;insulin&#10;click 'Submit'
+                      <td>   <textarea style="display: none" class="tipOne" disabled="disabled" rows="15" cols="45">Enter Drugs (if more than one) as&#13;[comma separated] or [newline separated]
+cisplatin, insulin,trail &#10;&#10;OR&#10;&#10;cisplatin&#13;insulin&#10;trail&#10; click 'Submit'
                                                  </textarea> </td>
                 </form>
             </div>
@@ -208,8 +217,8 @@ $mirna = mysqli_real_escape_string($mirnabDb, $_POST['user']);
             AND main_v2.mirna_name in ('".$strNew."')";
 
 $graphQuery =
-            "SELECT c.mirna_name AS source
-           , c.drug AS target
+            "SELECT c.mirna_name AS target
+           , c.drug AS source
            , c.pmid 
            ,c.tally/(select max(t.tally) from 
                     (SELECT count(*) as tally
@@ -255,7 +264,7 @@ $jsonGraph=json_encode($dataGraph);
 //2  results are taken in for the table and graph queries made above, they are looped through and 
 //split into an array, then they are cast into json type objects 
 ?>
-                  <script src="tempo.js"></script>
+                  <script src="newGraph.js"></script>
 
 <script>
    function drawTable(jsonData) {
@@ -383,8 +392,8 @@ $trimmed = array();
             AND drug in ('".$strNew."')";
 
 $graphQuery =
-            "SELECT c.mirna_name AS source
-           , c.drug AS target
+            "SELECT c.mirna_name AS target
+           , c.drug AS source
            , c.pmid
            ,c.tally/(select max(t.tally) from 
                     (SELECT count(*) as tally

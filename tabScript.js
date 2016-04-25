@@ -6,6 +6,11 @@ var contentDivs = new Array();
 function init() {
 
     // Grab the tab links and content divs from the page
+
+if(document.getElementById('tabs') !=null )
+
+{//start if
+
     var tabListItems = document.getElementById('tabs').childNodes;
     for ( var i = 0; i < tabListItems.length; i++ ) {
         if ( tabListItems[i].nodeName == "LI" ) {
@@ -34,7 +39,7 @@ function init() {
         if ( i != 0 ) contentDivs[id].className = 'tabContent hide';
         i++;
     }
-}
+
 
 function showTab() {
     var selectedId = getHash( this.getAttribute('href') );
@@ -66,4 +71,6 @@ function getHash( url ) {
     return url.substring( hashPos + 1 );
 }
 
-//]]>
+}//end if
+
+}//close init

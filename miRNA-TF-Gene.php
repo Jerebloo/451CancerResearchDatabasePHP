@@ -12,15 +12,14 @@
     <title>Analysis page</title>
     <!-- Bootstrap core CSS -->
     <link href="bootstrap-3.3.5-dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="tabsStyle.css" rel="stylesheet">
-    <link rel="stylesheet" href="mSTG.css">
+ 
+    <link rel="stylesheet" href="newG.css">
     <link href="css/mystyles.css" rel="stylesheet">
     <link href="css/font-awesome.min.css" rel="stylesheet">
     <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
-    <script src="tabScript.js"></script>
-    <script src="table.js"></script>
+  
     <link rel="stylesheet" href="table.css">
-    <link rel="stylesheet" href="googleTableCss.css">
+
     <script src= "http://www.google.com/uds/modules/gviz/gviz-api.js"> </script>
     <script src= "https://www.google.com/jsapi"> </script>
     <script type="text/javascript">
@@ -29,7 +28,7 @@
 <!--all needed tools are included in the head, these are : D3, google table, bootstrap, css files for the graph, tabs and table -->
 </head>
 
-<body onload="init()"> 
+
     <div class="container">
         <!-- Static navbar -->
         <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -46,15 +45,14 @@
                 <div id="navbar" class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
                         <li><a href="Home.html"><span class="glyphicon glyphicon-home"
-                            aria-hidden="true"></span> Home</a></li>
+                            aria-hidden="true"></span> iMir </a></li>
                         <li><a href="Search.php"><span class="glyphicon glyphicon-search"
                             aria-hidden="true"></span> Search</a></li>
-                        <li><a href="Analysis.php"><span class="glyphicon glyphicon-cog"
-                            aria-hidden="true"></span> Analysis</a></li>
+                       
                         <li><a href="miRNA-disease.php">miRNA-disease</a></li>
                         <li class = "active"><a href="miRNA-TF-Gene.php">miRNA-TF-Gene</a></li>
                         <li><a href="miRNA-Drug.php">miRNA-Drug</a></li>
-                        <li><a href="miRNA-Methylation.php">miRNA methylation</a></li>
+                       
                     </ul>
                 </div><!--/.nav-collapse -->
             </div><!--/.container-fluid -->
@@ -68,26 +66,60 @@
             <div>
 
                 <form ="" method='post'>
-                <tr> <th><i><a class="testTipOne embeddedAnchors" href="javascript:void(0);">Show tip</a></i> </th>  </tr>
-               <p>Enter miRNAs: </p> 
-               <td><textarea name="mirna" value="" rows = "3" cols="50"></textarea></td>
-               <p>Enter Genes: </p> 
-               <td><textarea name="gene" value="" rows = "3" cols="50"></textarea></td>
-               <p>Enter TF: </p> 
-               <td><textarea name="tf" value="" rows = "3" cols="50"></textarea></td>
+                 
+               <div class="col-sm-7"> 
+               <p class="col-sm-3">Enter miRNAs: </p> 
+               <br><br>
+               <textarea name="mirna" value="" rows = "3" cols="50"></textarea>
+              
+               <br><br>
+               <p class="col-sm-3">Enter Genes: </p> 
+               <br><br>
+               <textarea name="gene" value="" rows = "3" cols="50"></textarea>
+           
+           <br><br>
+               <p class="col-sm-3">Enter TF: </p> 
+               <br><br>
+               <textarea name="tf" value="" rows = "3" cols="50"></textarea>
+           
                 
                 <input type="submit" name="submit" value="Submit">
-                <p> </p>
- <td>   <textarea style="display: none" class="tipOne" disabled="disabled" rows="12" cols="60">Enter miRNAs, Genes,TFs (if more than one) as&#13;[comma separated] or [newline separated]
+            </div>
+    <div class="col-sm-5">       
+   <div>
+                 <i><a class="testTipOne embeddedAnchors" href="javascript:void(0);">Show tip</a></i>
+                </div>          
+   <textarea style="display: none" class="tipOne" disabled="disabled" rows="15" cols="50">Enter miRNAs, Genes,TFs (if more than one) as&#13;[comma separated] or [newline separated]
                                                 hsa-mir-127,hsa-mir-126  
                                                 NOTCH1,WDR20,CD8A  
                                                 NR3B3,klf2a 
                                                 click 'Submit'
-                                                 </textarea> </td>
+                                                 </textarea> 
+        </div>  
             </form>      
                 
             </div>
         <!-- this div builds 3 boxes and places them in a form of method post, what is entered in the 3 boxes will be stored in php -->
+         <div id="filenamemodal" class="modal fade" tabindex="-1" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header" style="background-color: grey; height: 50px">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" style="color: white; font-weight: bold">File Name</h4>
+                    </div>
+                    <div class="modal-body" style="height: 150px">
+                        <form>
+                            <div class="form-group">
+                                <h5>Enter Filename</h5>
+                                <input type="text" class="form-control" id="modalinput">
+                            </div>
+                            <button type="button" class="btn btn-primary" onclick="download();return false;" data-dismiss="modal">Save</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                        </form>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
 
 <script src="http://code.jquery.com/jquery-1.11.3.js"></script>
 
@@ -111,6 +143,8 @@ $(".testTipOne").click(function(){
     <div  id="graph">
     </div>  
      <!-- this div sizes and places content, in this case the graph and table are going to be attached to the bottom 2 divs -->
+
+<p>Download <a id="csv" href="#" onclick="getCSV();return false;">CSV</a><p>
 
 <?php
 
@@ -255,7 +289,7 @@ else
 </script>
 
 
-<script src="tempo.js"></script> <!--uses the multiSourceTargetGraph as a reference for building a graph-->
+<script src="newGraph.js"></script> <!--uses the multiSourceTargetGraph as a reference for building a graph-->
 
 <script>
 var jsonForm = <?php echo $jsonForm; ?>; // grabs php variable and stores it in javascript, this is the data from the query
@@ -266,6 +300,108 @@ createGraph(jsonForm,"#graph"); //calls the graph function from the multiSourceT
 
 
 </script>  
+
+<script>
+
+function getCSV(){
+        var modalbtn = document.createElement("button");
+        modalbtn.setAttribute("class", "btn btn-primary");
+        modalbtn.setAttribute("data-toggle", "modal");
+        modalbtn.setAttribute("data-target", "#filenamemodal");
+        modalbtn.style = "visibility:hidden";
+        document.body.appendChild(modalbtn);
+        modalbtn.click();
+        document.body.removeChild(modalbtn);
+        //filename = document.getElementById("modalinput").value;
+        console.log("Clicked on CSV link");
+        //var data = typeof jsonForm != 'object' ? JSON.parse(jsonForm) : jsonForm;
+        //console.log("data " + data);
+        
+        //var uri = "data:text/csv;charset=utf-8,";
+        //Bactraccking/Testing
+        console.log(jsonForm);
+        console.log("****END JSONFORM*****");
+        console.log("EXAMPLE");
+        console.log("pubID: "+jsonForm[0].gene_pubId);
+        console.log("source: "+jsonForm[0].source.name);
+        console.log("target: "+jsonForm[0].target.name);
+        console.log("type: "+jsonForm[0].gene_name);
+        //setTimeout(download(), 10000);
+        
+        /*jsonForm.forEach(function(infoArray, index){
+            console.log("Array---> " + infoArray);
+            for (var i = 0; i < jsonForm.length; i++) {
+                                
+                //2nd loop will extract each column and convert it in string comma-seprated
+                for (var index in jsonForm[i]) {
+                    console.log(jsonForm[i][index]);
+                }
+             }
+
+            var dataString = Array.prototype.join.call(infoArray, ",");
+            console.log("dataString---->> "+dataString);
+            csv += index < jsonForm.length ? dataString+ "\n" : dataString;
+            console.log("index: "+index);
+        });
+        var encodedUri = encodeURI(uri);
+        var link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", "my_data.csv");
+        
+        link.click(); // This will download the data file named "my_data.csv".*/
+        
+    }
+    
+    //Downloads file after user has chosen to enter a file
+    //If User decides not to enter file name and continues, file has default name
+    //File won't be downladed if user dismisses modal
+    function download(){
+        var csv = "";
+        var filename = document.getElementById("modalinput").value;
+        console.log("FILENAME ---->> "+filename);
+        //Sets file headers
+        var headers="miRNA,TF,Gene,PubId";
+        console.log("Row --->> "+headers);
+        /*headers=headers.slice(0, -9);
+        console.log("Row after slice -->> "+headers);*/
+        //Writes file headers onto .csv file and goes to new line
+        csv += headers + '\r\n';
+        //Fills files columns rows by rows 
+        for(var i=0; i<jsonForm.length; i++){
+            var rows="";
+            var pubID = jsonForm[i].gene_pubId;
+            var miRNA = jsonForm[i].source.name;
+            var TF = jsonForm[i].target.name;
+            var gene = jsonForm[i].gene_name;
+            rows+='"' + miRNA + '",' + '"' + TF + '",' + '"' + gene + '",' + '"' + pubID + '",';
+            console.log("rows --->> " + rows);
+            rows=rows.slice(0, rows.length-1);
+            console.log("rows after slice() --->> " + rows);
+            csv += rows + '\r\n';
+        }
+        if (csv == '') {        
+            alert("Invalid data");
+            return;
+        } 
+        //CSV file format  
+        var uri = 'data:text/csv;charset=utf-8,' + escape(csv);
+        //Creates invisible link that triggers download
+        var link = document.createElement("a");    
+        link.href = uri;
+        link.style = "visibility:hidden";
+        if(filename=="")
+        link.download = "Xfile.csv";
+        else{
+            filename=filename.replace(/ /g,"_");
+            console.log("filename after replace() --->> " + filename);
+            console.log("file name "+filename+".csv");
+            link.download = filename+".csv";
+        }
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        }
+</script>
 
     </div><!--/.container-fluid -->
      

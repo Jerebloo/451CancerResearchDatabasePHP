@@ -39,7 +39,7 @@
     <link href="css/bootstrap-theme.min.css" rel="stylesheet">
     <link href="css/mystyles.css" rel="stylesheet">
     <!-- Custom styles for this template -->
-    <link rel="stylesheet" href="googleTableCss.css">
+
     <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
     <script src= "http://www.google.com/uds/modules/gviz/gviz-api.js"> </script>
     <script src= "https://www.google.com/jsapi"> </script>
@@ -60,20 +60,18 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="Home.html">iMir</a>
+               
             </div>
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li><a href="Home.html"><span class="glyphicon glyphicon-home"
-                         aria-hidden="true"></span> Home</a></li>
+                         aria-hidden="true"></span> iMir</a></li>
                     <li class="active"><a href="Search.php"><span class="glyphicon glyphicon-search"
                          aria-hidden="true"></span> Search</a></li>
-                    <li><a href="Analysis.php"><span class="glyphicon glyphicon-cog"
-                         aria-hidden="true"></span> Analysis</a></li>
                     <li><a href="miRNA-disease.php">miRNA-disease</a></li>
                     <li><a href="miRNA-TF-Gene.php">miRNA-TF-Gene</a></li>
                     <li><a href="miRNA-Drug.php">miRNA-Drug</a></li>
-                    <li><a href="miRNA-Methylation.php">miRNA methylation</a></li>
+               
                 </ul>
             </div><!--/.nav-collapse -->
         </div><!--/.container-fluid -->
@@ -222,7 +220,7 @@
 
 
     
-  <script src="js/bootstrap.min.js"></script>
+  <script src="bootstrap-3.3.5-dist/js/bootstrap.min.js"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
   
 </body>
