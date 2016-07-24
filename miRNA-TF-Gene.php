@@ -50,7 +50,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="Home.html">iMir</a>
+                    
                 </div>
                 <div id="navbar" class="navbar-collapse collapse">
                     <!--  the ul class contains all the tabs for the website -->
@@ -58,7 +58,7 @@
                         <!-- sets the mirna-TF-gene page as active, glyphicons are small icons to be placed wth the 
                     text in the tab box-->
                         <li><a href="Home.html"><span class="glyphicon glyphicon-home"
-                            aria-hidden="true"></span> iMir </a></li>
+                            aria-hidden="true"></span> iMiR </a></li>
                         <li><a href="Search.php"><span class="glyphicon glyphicon-search"
                             aria-hidden="true"></span> Search</a></li>
                        
@@ -73,7 +73,7 @@
         <!-- the nav div builds the bar at the top of the page, each page is declared in the ul class as a li element -->
         <div class="home">
          
-            <p>This page will alow you to search the database.</p>
+            <h1>Explore MiRNA - TF - Gene Relationship</h1>
         </div>
 
             <div>
@@ -99,12 +99,13 @@
                <textarea name="tf" value="" rows = "3" cols="50"></textarea>
            
                  <p style="padding: 10px"></p>
-                    <label for="mLimit">Display all Results</label>
                     <!-- creates a radio button that indicates no limit on a query -->
-                    <input type="radio" name="limit" id="mlimit" value="0"><br>
-                    <label for="climit">Set Custom Result Limit</label>
-                    <!-- creates a radio button that indicates a user limit on a query -->
+                     <input type="radio" name="limit" id="mlimit" value="0">
+                    <label for="mLimit">&nbsp;   Display all Results</label><br>
+                    
+                   <!-- creates a radio button that indicates a user limit on a query -->
                     <input type="radio" name="limit" id="climit" value="1">
+                    <label for="climit">&nbsp;   Set Custom Result Limit</label>
                         <div style="width: 300; height: 50"> 
                          <!-- creates a slide bar from which a limit value will be posted, on change is provided to show the user their selection -->
                         <input type="range" min="10" max="500" step="10" value="30" name="graphlimit" id="slider" onchange="showValue(this.value)">
@@ -118,11 +119,11 @@
                  <i><a class="testTipOne embeddedAnchors" href="javascript:void(0);">Show tip</a></i>
                 </div>       
                  <!-- the text area that will pop in and out when you click on showtip -->   
-   <textarea style="display: none" class="tipOne" disabled="disabled" rows="15" cols="50">Enter miRNAs, Genes,TFs (if more than one) as&#13;[comma separated] or [newline separated]
+   <textarea style="display: none" class="tipOne" disabled="disabled" rows="7" cols="50">Enter miRNAs, Genes,TFs (if more than one) as&#13;[comma separated] or [newline separated]
                                                 hsa-mir-127,hsa-mir-126  
                                                 NOTCH1,WDR20,CD8A  
-                                                NR3B3,klf2a 
-                                                click 'Submit'
+                                                NR3B3,klf2a
+                                                click 'Submit' 
                                                  </textarea> 
         </div>  
             </form>      

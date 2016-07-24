@@ -67,7 +67,7 @@
                         <!-- sets the mirna disease page as active, glyphicons are small icons to be placed wth the 
                     text in the tab box-->
                         <li><a href="Home.html"><span class="glyphicon glyphicon-home"
-                            aria-hidden="true"></span> iMir</a></li>
+                            aria-hidden="true"></span> iMiR</a></li>
 
                         <li><a href="Search.php"><span class="glyphicon glyphicon-search"
                             aria-hidden="true"></span> Search</a></li>
@@ -83,7 +83,7 @@
         <!-- -->
         <!-- Main component for a message-->
         <div class="page-header">
-            <h1>Search Database</h1><small>This page will alow you to search the database in two ways. First by entering
+            <h1>Explore miRNA - Disease Relationship</h1><small>This page will alow you to search the database in two ways. First by entering
                 one or more miRNAs in the first tab and getting a result and secondly by entering one or 
                 more Diseases in the second tab and getting an output.
             </small>
@@ -115,16 +115,18 @@
                   <td> <textarea name="user" value="" rows = "15" cols="50 "></textarea></td>
                     <!-- the text area that will pop in and out when you click on showtip -->
                     <td> <textarea style="display: none" class="tipOne" disabled="disabled" rows="15" cols="45">Enter miRNAs (if more than one) as&#13;[comma separated] or [newline separated]
-                        hsa-mir-21, hsa-mir-205,hsa-mir-222 &#10;&#10;OR&#10;&#10;hsa-mir-21&#13;hsa-mir-205&#10;hsa-mir-222&#10; click 'Submit'
+                        hsa-mir-21,hsa-mir-205,hsa-mir-222 &#10;&#10;OR&#10;&#10;hsa-mir-21&#13;hsa-mir-205&#10;hsa-mir-222&#10; click 'Submit'
                                                  </textarea> </td>
                      <p style="padding: 10px"></p>
-
-                    <label for="mLimit">Display all Results</label>
+                    
                     <!-- creates a radio button that indicates no limit on a query -->
-                    <input type="radio" name="limit" id="mlimit" value="0"><br>
-                    <label for="climit">Set Custom Result Limit</label>
-                    <!-- creates a radio button that indicates a user limit on a query -->
+                     <input type="radio" name="limit" id="mlimit" value="0">
+                    <label for="mLimit">&nbsp;   Display all Results</label><br>
+                    
+                   <!-- creates a radio button that indicates a user limit on a query -->
                     <input type="radio" name="limit" id="climit" value="1">
+                    <label for="climit">&nbsp;   Set Custom Result Limit</label>
+                    
                         <div style="width: 300; height: 50">
                             <!-- creates a slide bar from which a limit value will be posted, on change is provided to show the user their selection -->
                         <input type="range" min="10" max="500" step="10" value="30" name="graphlimit" id="slider" onchange="showValue(this.value)">
@@ -149,13 +151,15 @@
         lung cancer, breast cancer,pancreatic cancer &#10;&#10;OR&#10;&#10;lung cancer&#13;breast cancer&#10;pancreatic cancer &#10;click 'Submit'
                                                  </textarea> </td>
                        <p style="padding: 10px"></p>
-
-                    <label for="mlimitdis">Display all Results</label>
-                    <input type="radio" name="limit" id="mlimitdis" value="0"><br>
-                    <!-- creates a radio button that indicates no limit on a query -->
-                    <label for="climitdis">Set Custom Result Limit</label>
+                     <!-- creates a radio button that indicates no limit on a query -->
+                     <input type="radio" name="limit" id="mlimitdis" value="0">
+                   
+                    <label for="mlimitdis">&nbsp;   Display all Results</label><br>
+                   
                     <!-- creates a radio button that indicates a user limit on a query -->
                     <input type="radio" name="limit" id="climitdis" value="1">
+                    <label for="climitdis">&nbsp;   Set Custom Result Limit</label>
+                   
                          <div style="width: 300; height: 50">
                             <!-- creates a slide bar from which a limit value will be posted, on change is provided to show the user their selection -->
                         <input type="range" min="10" max="500" step="10" value="30" name="graphlimitdis" id="slider" onchange="showValue2(this.value)">
@@ -514,8 +518,8 @@ $jsonGraph=json_encode($dataGraph);
     
     
     //empty json checking was added to avoid issues in improper js declarations
-    var jsonForm = <?php if(!empty($jsonForm)) {echo $jsonForm;} else {echo json_encode("empty");}?>;
-    var jsonGraph= <?php if(!empty($jsonGraph)) {echo $jsonGraph;} else {echo json_encode("empty");}?>;
+    var jsonForm = <?php  echo $jsonForm; ?>;
+    var jsonGraph= <?php  echo $jsonGraph; ?>;
 
 if(jsonForm!="empty" && jsonGraph!="empty")
 {    //Draws table and graph with data from php script
@@ -541,10 +545,10 @@ function getCSV(){
     function download(){
         var csv = "";
         var filename = document.getElementById("modalinput").value;
-        console.log("FILENAME ---->> "+filename);
+       
         //Sets file headers
         var headers="miRNA,Disease,Regulation,PubId";
-        console.log("Row --->> "+headers);
+      
 
         //Writes file headers onto .csv file and goes to new line
         csv += headers + '\r\n';
@@ -556,9 +560,9 @@ function getCSV(){
             var disease = jsonForm[i].target;
             var regulation = jsonForm[i].type;
             rows+='"' + miRNA + '",' + '"' + disease + '",' + '"' + regulation + '",' + '"' + pubID + '",';
-            console.log("rows --->> " + rows);
+            
             rows=rows.slice(0, rows.length-1);
-            console.log("rows after slice() --->> " + rows);
+         
             csv += rows + '\r\n';
         }
         if (csv == '') {        
@@ -575,8 +579,7 @@ function getCSV(){
         link.download = "Xfile.csv";
         else{
             filename=filename.replace(/ /g,"_");
-            console.log("filename after replace() --->> " + filename);
-            console.log("file name "+filename+".csv");
+        
             link.download = filename+".csv";
         }
         document.body.appendChild(link);
@@ -627,7 +630,7 @@ require_once("dBaseAccess.php");
         {$limit=$_POST['limit'];}
     else 
         {$limit=0;}
-    echo $limit;
+   
 
 // check that the user set a limit
 

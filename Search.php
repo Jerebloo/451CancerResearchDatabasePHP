@@ -65,7 +65,7 @@
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li><a href="Home.html"><span class="glyphicon glyphicon-home"
-                         aria-hidden="true"></span> iMir</a></li>
+                         aria-hidden="true"></span> iMiR</a></li>
                     <li class="active"><a href="Search.php"><span class="glyphicon glyphicon-search"
                          aria-hidden="true"></span> Search</a></li>
                     <li><a href="miRNA-disease.php">miRNA-disease</a></li>
@@ -78,8 +78,8 @@
     </nav>
     <div class="container">
         <div class="page-header">
-            <h1>Search Database</h1><small>This page will alow you to search a specific element by selecting 
-                the element from the options in the dropdown menu</small>
+            <h1>Explore MiRNA - Chemical Relationship</h1><small>This page will alow you to search a specific chemical by selecting 
+                any chemical from the options in the dropdown menu</small>
         </div>        
         <div>
             <select id="selector"> </select>
@@ -148,7 +148,7 @@
         var dataT = new google.visualization.DataTable();
         var numRows = jsonData.length;
         dataT.addRows(numRows);
-        console.log(numRows, " rows added");
+    
     
         dataT.addColumn('string', 'Chemical');
         dataT.addColumn('string', 'miRNA');
@@ -197,8 +197,10 @@
                 if(data){
                         $("#table").empty();
                         var header = ["Chemical","miRNA","Response","Condition","Tech","PubId"]; //probably not needed anymore
+                        console.log(data);
+                        
                         drawTable(JSON.parse(data));// makes the google table
-
+                        
                     }
                     else {
                         //the data is empty

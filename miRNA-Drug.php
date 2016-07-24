@@ -62,7 +62,7 @@
                     <ul class="nav navbar-nav">
                         <!-- glypicons give small icons next to tab names -->
                         <li><a href="Home.html"><span class="glyphicon glyphicon-home"
-                            aria-hidden="true"></span> iMir</a></li>
+                            aria-hidden="true"></span> iMiR</a></li>
                         <li><a href="Search.php"><span class="glyphicon glyphicon-search"
                             aria-hidden="true"></span> Search</a></li>
                         
@@ -77,7 +77,7 @@
         <!-- -->
         <!-- Main component for a primary marketing message or call to action -->
         <div class="page-header">
-            <h1>Search Database</h1><small>This page will alow you to search the database in two ways. First by entering
+            <h1>Explore MiRNA - Drug Relationship</h1><small>This page will alow you to search the database in two ways. First by entering
                 one or more miRNAs in the first tab and getting a result and secondly by entering one or 
                 more Drugs in the second tab and getting an output.
             </small>
@@ -115,12 +115,13 @@ hsa-mir-21, hsa-mir-205, hsa-mir-193b &#10;&#10;OR&#10;&#10;hsa-mir-21&#13;hsa-m
                                                  </textarea> </td>
 
                         <p style="padding: 10px"></p>
-                    <label for="mLimit">Display all Results</label>
-                     <!-- creates a radio button that indicates no limit on a query -->
-                    <input type="radio" name="limit" id="mlimit" value="0"><br>
-                    <label for="climit">Set Custom Result Limit</label>
-                    <!-- creates a radio button that indicates a user limit on a query -->
+                   <!-- creates a radio button that indicates no limit on a query -->
+                     <input type="radio" name="limit" id="mlimit" value="0">
+                    <label for="mLimit">&nbsp;   Display all Results</label><br>
+                    
+                   <!-- creates a radio button that indicates a user limit on a query -->
                     <input type="radio" name="limit" id="climit" value="1">
+                    <label for="climit">&nbsp;   Set Custom Result Limit</label>
                         <div style="width: 300; height: 50">
                  <!-- creates a slide bar from which a limit value will be posted, on change is provided to show the user their selection -->
                         <input type="range" min="10" max="500" step="10" value="30" name="graphlimit" id="slider" onchange="showValue(this.value)">
@@ -148,12 +149,15 @@ cisplatin, insulin,trail &#10;&#10;OR&#10;&#10;cisplatin&#13;insulin&#10;trail&#
                                                  </textarea> </td>
 
                              <p style="padding: 10px"></p>
-                    <label for="mlimitdis">Display all Results</label>
                     <!-- creates a radio button that indicates no limit on a query -->
-                    <input type="radio" name="limit" id="mlimitdis" value="0"><br>
-                    <label for="climitdis">Set Custom Result Limit</label>
+                     <input type="radio" name="limit" id="mlimitdis" value="0">
+                   
+                    <label for="mlimitdis">&nbsp;   Display all Results</label><br>
+                   
                     <!-- creates a radio button that indicates a user limit on a query -->
                     <input type="radio" name="limit" id="climitdis" value="1">
+                    <label for="climitdis">&nbsp;   Set Custom Result Limit</label>
+                    
                          <div style="width: 300; height: 50">
                      <!-- creates a slide bar from which a limit value will be posted, on change is provided to show the user their selection -->
                         <input type="range" min="10" max="500" step="10" value="30" name="graphlimitdis" id="slider" onchange="showValue2(this.value)">
